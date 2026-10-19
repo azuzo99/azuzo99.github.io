@@ -1,8 +1,144 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by its component solver - see docs/design.md §4-§5.
+import { Picture, Image } from 'astro:assets';
+import { about } from '../../data/about';
 ---
 <section id="about" data-chapter="02" aria-labelledby="about-h">
   <div class="sec" data-pause style="max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) var(--section-pb);">
-    <h2 id="about-h" style="margin: 0; height: 700px; font-size: 16px;">Placeholder: About</h2>
+    <div class="bento">
+      <div data-reveal="" class="photo">
+        <div class="photo-img">
+          <Picture src={about.photo} alt={about.photoAlt} formats={['avif', 'webp']} widths={[480, 960]} sizes="(max-width: 899px) 100vw, 520px" loading="lazy" decoding="async" />
+        </div>
+        <div class="photo-shade"></div>
+        <span class="num">{about.num}</span>
+        <h2 id="about-h" class="h">{about.heading}</h2>
+        <div class="photo-foot">
+          <span class="loc"><span class="dot"></span>{about.location}</span>
+          <a class="exp" href={about.experience.href} target="_blank" rel="noreferrer"><Image src={about.experience.icon} alt="" width={16} height={16} class="exp-ic" />{about.experience.label}</a>
+        </div>
+      </div>
+
+      <div class="col">
+        <div data-reveal="" data-delay="100" class="card short">
+          <span class="np mono">{about.inShortLabel}</span>
+          <p>{about.inShort}</p>
+        </div>
+
+        <div class="row">
+          <div data-reveal="" data-delay="150" class="card stats">
+            {about.stats.map((s) => (
+              <span class="stat"><span class="big">{s.value}<span class="unit">{s.unit}</span></span><span class="cap">{s.label}</span></span>
+            ))}
+          </div>
+          <div data-reveal="" data-delay="200" class="card certs">
+            <span class="mono certs-l">{about.certsLabel}</span>
+            <div class="cert aws">
+              <span class="cert-ic aws-ic"><Image src={about.certAws.icon} alt={about.certAws.alt} width={30} height={30} /></span>
+              <span class="cert-t"><span class="cert-n">{about.certAws.title}</span><span class="np cert-d">{about.certAws.detail}</span></span>
+            </div>
+            <div class="cert claude">
+              <span class="cert-ic claude-ic"><Image src={about.certClaude.icon} alt={about.certClaude.alt} width={22} height={22} /></span>
+              <span class="cert-t claude-t">
+                <span class="cert-n muted">{about.certClaude.title}</span>
+                <span class="badge"><span class="pulse"></span><span class="np">{about.certClaude.badge}</span><span class="ph">{about.certClaude.badgeShort}</span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <a href={about.speaker.href} data-reveal="" data-delay="250" class="dark">
+            <div class="dark-top">
+              <span class="dark-ic" style="background: #262626;"><Image src={about.speaker.icon} alt="" width={20} height={20} /></span>
+              <span class="dark-l"><span class="np">{about.speaker.link}</span><span class="ph">{about.speaker.linkShort}</span></span>
+            </div>
+            <span class="dark-t">{about.speaker.title}</span>
+            <span class="np dark-d">{about.speaker.detail}</span>
+          </a>
+          <a href={about.communities.href} data-reveal="" data-delay="300" class="dark">
+            <div class="dark-top">
+              <span class="dark-icons">
+                <span class="dark-ic" style="background: #FBF6EE;"><Image src={about.communities.icons[0]} alt="" width={22} height={22} /></span>
+                <span class="dark-ic" style="background: #FBF6EE;"><Image src={about.communities.icons[1]} alt="" width={26} height={26} /></span>
+              </span>
+              <span class="dark-l"><span class="np">{about.communities.link}</span><span class="ph">{about.communities.linkShort}</span></span>
+            </div>
+            <span class="dark-t"><span class="count">{about.communities.count}</span>{about.communities.title}</span>
+            <span class="np dark-d">{about.communities.detail}</span>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  .bento { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
+  .photo { flex: 1 1 400px; min-width: 0; min-height: 130px; position: relative; border-radius: 16px; overflow: hidden; background: #2A2A2A; }
+  .photo-img { position: absolute; inset: 0; filter: grayscale(1); }
+  .photo-img :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .photo-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,17,17,0.55) 0%, rgba(17,17,17,0) 38%, rgba(17,17,17,0) 58%, rgba(17,17,17,0.7) 100%); pointer-events: none; }
+  .num { position: absolute; left: clamp(20px,3vw,28px); top: clamp(16px,2.4vw,26px); font-family: 'Geist Mono', monospace; font-size: 12px; color: #BDB6AA; pointer-events: none; }
+  .h { position: absolute; left: clamp(20px,3vw,28px); top: clamp(34px,4vw,46px); margin: 0; font-weight: 500; font-size: clamp(40px,5.4vw,72px); line-height: 1; letter-spacing: -.045em; color: #FBF6EE; pointer-events: none; }
+  .photo-foot { position: absolute; left: clamp(20px,3vw,28px); right: clamp(20px,3vw,28px); bottom: clamp(16px,2.4vw,24px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+  .loc { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: #111111; background: #FBF6EE; padding: 7px 14px; border-radius: 999px; pointer-events: none; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #2F7A55; }
+  .exp { display: none; gap: 8px; align-items: center; font-size: 14px; color: #FBF6EE; }
+  .exp:hover { color: #FBF6EE; text-decoration: underline; }
+  .exp :global(.exp-ic) { width: 16px; height: 16px; background: #FFFFFF; border-radius: 3px; }
+  .col { flex: 1.25 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .card { background: #F1EADF; border: 1px solid #E4DACA; border-radius: 16px; min-width: 0; }
+  .mono { font-family: 'Geist Mono', monospace; font-size: 12px; color: #5C5850; }
+  .short { padding: clamp(20px,3vw,28px); display: flex; flex-direction: column; gap: clamp(10px,1.6vw,16px); }
+  .short .mono { letter-spacing: .06em; }
+  .short p { margin: 0; font-size: clamp(16px,1.8vw,22px); line-height: 1.45; font-weight: 500; letter-spacing: -.015em; color: #111111; max-width: 40ch; text-wrap: pretty; }
+  .stats { flex: 1 1 200px; padding: clamp(18px,2.4vw,24px); display: flex; flex-direction: column; justify-content: space-between; gap: clamp(14px,2vw,18px); }
+  .stat { display: flex; flex-direction: column; gap: 6px; }
+  .stat + .stat { flex: 1 1 0; padding-top: 16px; border-top: 1px solid #E4DACA; }
+  .big { font-size: clamp(26px,4vw,54px); font-weight: 500; letter-spacing: -.045em; line-height: 1; }
+  .unit { font-size: .45em; letter-spacing: -.02em; color: #5C5850; }
+  .cap { font-size: clamp(13px,1.4vw,14px); color: #4E4A44; line-height: 1.35; }
+  .certs { flex: 1.4 1 280px; padding: clamp(14px,2vw,20px); display: flex; flex-direction: column; gap: clamp(8px,1.2vw,10px); }
+  .certs-l { padding: 0 4px; }
+  .cert { display: flex; align-items: center; gap: 14px; border-radius: 12px; padding: clamp(9px,1.2vw,12px) clamp(11px,1.4vw,14px); }
+  .cert.aws { background: #FFFFFF; border: 1px solid #E4DACA; }
+  .cert.claude { background: #FBF6EE; border: 1.5px dashed #D97757; }
+  .cert-ic { width: clamp(34px,4vw,44px); height: clamp(34px,4vw,44px); border-radius: 10px; display: grid; place-items: center; flex: none; }
+  .aws-ic { background: #FFFFFF; border: 1px solid #E4DACA; box-sizing: border-box; }
+  .claude-ic { background: #EAE2D4; }
+  .cert-t { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .claude-t { align-items: flex-start; gap: 6px; flex: 1; }
+  .cert-n { font-size: clamp(15px,1.6vw,16px); font-weight: 600; }
+  .cert-n.muted { color: #5C5850; line-height: 1.2; }
+  .cert-d { font-size: 12px; color: #5C5850; }
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; letter-spacing: .02em; padding: 5px 11px 5px 8px; border-radius: 999px; background: #D97757; color: #FFFFFF; white-space: nowrap; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; animation: azPulse 1.6s ease-in-out infinite; }
+  .dark { flex: 1 1 260px; min-width: 0; background: #111111; color: #FBF6EE; border-radius: 16px; padding: clamp(16px,2.4vw,22px) clamp(16px,2.6vw,24px); display: flex; flex-direction: column; gap: clamp(10px,1.6vw,14px); }
+  .dark:hover { color: #FBF6EE; background: #1C1C1C; }
+  .dark-top { display: flex; justify-content: space-between; align-items: center; }
+  .dark-icons { display: flex; gap: 6px; }
+  .dark-ic { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; }
+  .dark-l { font-size: 13px; color: #BDB6AA; }
+  .dark-t { font-size: clamp(19px,2.4vw,24px); font-weight: 500; letter-spacing: -.03em; line-height: 1.1; }
+  .count { font-size: clamp(28px,4vw,40px); letter-spacing: -.04em; margin-right: 6px; }
+  .dark-d { font-size: 14px; color: #BDB6AA; line-height: 1.5; }
+  .ph { display: none; }
+
+  @media (min-width: 600px) {
+    .exp { display: inline-flex; }
+  }
+  @media (min-width: 860px) {
+    .photo { min-height: 520px; }
+  }
+  @media (min-width: 600px) and (max-width: 859px) {
+    .photo { min-height: 260px; }
+  }
+  @media (max-width: 599px) {
+    .np { display: none; }
+    .ph { display: inline; }
+    .stats { flex-direction: row; }
+    .stat + .stat { padding-top: 0; border-top: 0; padding-left: 16px; border-left: 1px solid #E4DACA; }
+    .dark { flex: 1 1 100px; }
+  }
+</style>

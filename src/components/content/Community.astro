@@ -1,8 +1,135 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by its component solver - see docs/design.md §4-§5.
+import { Picture, Image } from 'astro:assets';
+import { communitySection, communities, talk } from '../../data/community';
 ---
 <section id="community" data-chapter="04" aria-labelledby="community-h">
-  <div class="sec" data-pause style="max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) var(--section-pb);">
-    <h2 id="community-h" style="margin: 0; height: 1100px; font-size: 16px;">Placeholder: Community</h2>
+  <div class="sec" data-pause style="max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) var(--section-pb); display: flex; flex-direction: column; gap: 12px;">
+    <div data-reveal="" class="head">
+      <div class="head-l">
+        <span class="mono">{communitySection.num}</span>
+        <h2 id="community-h">{communitySection.heading}</h2>
+      </div>
+      <p class="lead">{communitySection.leadLines.map((l, i) => <span class={i === 1 ? 'strong' : ''}>{l}</span>)}</p>
+    </div>
+
+    <div class="grid">
+      <div class="cards">
+        {communities.map((c) => (
+          <article data-test="community" data-reveal="" data-delay={c.delay} data-collapsible data-open="false" class="card community">
+            <button type="button" class="toggle" data-toggle>
+              <span class="tg-ic"><Image src={c.icon} alt="" width={26} height={26} style="width: 26px; height: 26px; object-fit: contain;" /></span>
+              <span class="tg-t"><span class="tg-n">{c.name}</span><span class="tg-h">{c.hook}</span></span>
+              <span class="tg-g" aria-hidden="true" data-glyph>+</span>
+            </button>
+            <div class="np top">
+              <span class="ic"><Image src={c.icon} alt="" width={56} height={56} style="width: 60%; height: 60%; object-fit: contain;" /></span>
+              <span class="role">{c.role}</span>
+            </div>
+            <div class="body" data-body id={`${c.key}-body`}>
+              <div class={`ph-box ${c.key}`}>
+                <Picture src={c.photo.src} alt={c.photo.alt} formats={['avif', 'webp']} widths={[480, 960]} sizes="(max-width: 599px) 90vw, 560px" loading="lazy" decoding="async" style={c.photo.position ? `object-position: ${c.photo.position};` : undefined} />
+                <span class="chip"><span class="chip-ic"><Image src={c.photo.labelIcon} alt="" width={18} height={14} style={c.key === 'c0' ? 'width: 12px; height: 12px;' : 'width: 18px; height: 14px;'} /></span>{c.photo.label}</span>
+              </div>
+              <h3 class="np name">{c.name}</h3>
+              <p class="txt">{c.body}</p>
+              <div class="links">
+                {c.links.map((lk) => (
+                  <a href={lk.href} target="_blank" rel="noreferrer">{lk.label} ↗</a>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <article data-test="talk" data-reveal="" data-collapsible data-open="false" class="talk">
+        <button type="button" class="toggle talk-toggle" data-toggle>
+          <span class="tg-ic logo"><Image src={talk.orgLogo} alt={talk.orgLogoAlt} width={44} height={44} style="width: 100%; height: 100%; object-fit: cover; display: block;" /></span>
+          <span class="tg-t"><span class="tg-n">{talk.org}</span><span class="tg-h dark">{talk.hook}</span></span>
+          <span class="tg-g" aria-hidden="true" data-glyph>+</span>
+        </button>
+        <div class="body talk-body" data-body id="talk-body">
+          <div class="video">
+            <button type="button" class="facade" data-test="video-facade" aria-label={`${talk.playLabel} ${talk.duration}`} data-src={talk.embedUrl} data-title={talk.iframeTitle} data-allow={talk.iframeAllow}>
+              <Image src={talk.thumb} alt="" width={300} height={225} class="thumb" />
+              <span class="fade"></span>
+              <span class="play"><span class="tri"></span></span>
+              <span class="dur">{talk.duration}</span>
+            </button>
+          </div>
+          <div class="talk-t">
+            <span class="mono">{talk.eyebrow}</span>
+            <h3>{talk.title}</h3>
+            <p>{talk.body}</p>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 </section>
+
+<noscript><style>#community .body { display: contents !important; }</style></noscript>
+
+<script>
+  import '../../scripts/content';
+</script>
+
+<style>
+  .mono { font-family: 'Geist Mono', monospace; font-size: 12px; color: #5C5850; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; padding: 0 4px 20px; }
+  .head-l { display: flex; flex-direction: column; gap: 10px; }
+  h2 { margin: 0; font-weight: 500; font-size: clamp(48px,6vw,88px); line-height: .92; letter-spacing: -.05em; }
+  .lead { margin: 0; max-width: 36ch; text-align: left; font-size: 16px; line-height: 1.45; font-weight: 500; color: #4E4A44; display: flex; flex-direction: column; gap: 4px; }
+  .lead .strong { font-weight: 600; color: #111111; }
+  .grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch; }
+  .cards { flex: 1 1 100%; min-width: 0; display: flex; flex-wrap: wrap; gap: 12px; }
+  .card { flex: 1 1 260px; min-width: 0; min-height: 0; background: #F1EADF; color: #111111; border: 1px solid #E4DACA; border-radius: 16px; padding: clamp(20px,3.4vw,40px); display: flex; flex-direction: column; gap: clamp(12px,1.6vw,16px); }
+  .body { display: contents; }
+  .toggle { display: none; align-items: center; gap: 14px; width: 100%; min-height: 52px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .tg-ic { width: 44px; height: 44px; border-radius: 12px; background: #FBF6EE; display: grid; place-items: center; flex: none; }
+  .tg-ic.logo { overflow: hidden; background: #262626; }
+  .tg-t { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .tg-n { font-size: 19px; font-weight: 500; letter-spacing: -.02em; line-height: 1.15; }
+  .tg-h { font-size: 13px; line-height: 1.35; color: #4E4A44; }
+  .tg-g { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: #111111; color: #FBF6EE; font-size: 20px; line-height: 1; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ic { position: relative; width: clamp(40px,5vw,56px); height: clamp(40px,5vw,56px); border-radius: 14px; background: #FBF6EE; display: grid; place-items: center; }
+  .role { font-size: 12px; padding: 6px 12px; border-radius: 999px; border: 1px solid #CFC5B3; }
+  .ph-box { position: relative; margin-top: 4px; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: #E6DDCE; }
+  .ph-box.c0 { background: #262626; }
+  .ph-box :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .chip { position: absolute; left: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: #111111; color: #FBF6EE; }
+  .chip-ic { width: 24px; height: 18px; border-radius: 4px; background: #FFFFFF; display: grid; place-items: center; }
+  .chip-ic :global(img) { position: static; inset: auto; }
+  .name { margin: 0; font-weight: 500; font-size: clamp(22px,3vw,48px); line-height: 1.02; letter-spacing: -.04em; margin-top: 0; text-wrap: balance; }
+  .txt { margin: 0; font-size: clamp(14px,1.5vw,16px); line-height: 1.55; color: #4E4A44; max-width: 44ch; text-wrap: pretty; }
+  .links { display: flex; flex-wrap: wrap; gap: 16px; }
+  .links a { font-size: 14px; font-weight: 500; border-bottom: 1.5px solid currentColor; padding-bottom: 2px; }
+  .talk { flex: 1 1 100%; min-width: 0; background: #F1EADF; border: 1px solid #E4DACA; border-radius: 16px; padding: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .video { position: relative; flex: 0 1 300px; width: 100%; aspect-ratio: 16 / 9; background: #111111; border-radius: 10px; overflow: hidden; }
+  .video :global(.video-frame) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .facade { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; cursor: pointer; background: #111111; filter: grayscale(1); }
+  .facade :global(.thumb) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .fade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,17,17,0) 40%, rgba(17,17,17,0.7) 100%); }
+  .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 48px; height: 48px; border-radius: 50%; background: #FBF6EE; display: grid; place-items: center; }
+  .tri { width: 0; height: 0; border-left: 14px solid #111111; border-top: 8px solid transparent; border-bottom: 8px solid transparent; margin-left: 4px; }
+  .dur { position: absolute; left: 12px; bottom: 10px; font-family: 'Geist Mono', monospace; font-size: 12px; color: #FBF6EE; }
+  .talk-t { flex: 1 1 320px; min-width: 0; padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+  .talk-t h3 { margin: 0; font-weight: 500; font-size: 22px; line-height: 1.15; letter-spacing: -.025em; }
+  .talk-t p { margin: 0; font-size: 14px; line-height: 1.55; color: #4E4A44; max-width: 64ch; text-wrap: pretty; }
+  .tg-h.dark { color: #4E4A44; }
+
+  @media (min-width: 600px) {
+    .lead { text-align: right; }
+  }
+  @media (min-width: 860px) {
+    .card { flex-basis: 420px; min-height: 340px; }
+    .name { margin-top: auto; }
+  }
+  @media (max-width: 599px) {
+    .np { display: none; }
+    .toggle { display: flex; }
+    .talk { padding: 20px; }
+    [data-collapsible][data-open='false'] .body { display: none; }
+  }
+</style>
