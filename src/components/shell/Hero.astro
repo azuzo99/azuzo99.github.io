@@ -170,7 +170,8 @@ import { links, social, ui } from '../../data/site';
     .book { display: inline-flex; padding: 16px 26px; justify-content: flex-start; }
     .row { flex-direction: row; flex-wrap: wrap; align-items: center; }
     .socials { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-    .soc { padding: 15px; }
+    /* v4 keeps an empty label span after the icon, so gap: 10px adds 10px on the right. */
+    .soc { padding: 15px 25px 15px 15px; }
     .lbl { display: none; }
     .offer { margin: 0 6px 0 14px; padding-top: 4px; }
     .techrow { display: block; }
