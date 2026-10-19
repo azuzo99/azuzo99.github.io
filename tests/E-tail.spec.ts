@@ -212,14 +212,16 @@ test.describe('contact', () => {
 
   test('phone: 3-column icon grid + compact copy button @E', async ({ page }) => {
     only(isPhone(page), 'phone only');
-    const boxes = [];
     for (const c of contacts) {
       const a = page.locator(`#contact a[href="${c.href}"]`);
       await expect(a).toHaveCount(1);
       await expect(a).not.toContainText(c.sub);
-      boxes.push((await a.boundingBox())!);
     }
-    expect(new Set(boxes.map((b) => Math.round(b.y))).size, 'single row').toBe(1);
+    const measure = () => Promise.all(contacts.map(async (c) => (await page.locator(`#contact a[href="${c.href}"]`).boundingBox())!));
+    // Poll: the shell's staggered reveal (translate + delay) moves the links for ~1 s after they enter the viewport.
+    await page.locator('#contact').scrollIntoViewIfNeeded();
+    await expect.poll(async () => new Set((await measure()).map((b) => Math.round(b.y))).size, { message: 'single row', timeout: 5000 }).toBe(1);
+    const boxes = await measure();
     expect(new Set(boxes.map((b) => Math.round(b.x))).size, 'three columns').toBe(3);
     const copy = page.locator('#contact [data-test=copy-email]');
     await expect(copy).toContainText(email.action);
@@ -266,7 +268,9 @@ test.describe('contact', () => {
 test('phone: controls reach a 44px hit area @E', async ({ page }) => {
   only(isPhone(page), 'phone only');
   await open(page);
-  await page.locator('#stack [data-test=stack-group] button[aria-expanded]').first().click();
+  // Open every group (multi-open) so all tools are visible before measuring.
+  const heads = page.locator('#stack [data-test=stack-group] button[aria-expanded]');
+  for (let g = 0; g < (await heads.count()); g++) await heads.nth(g).click();
   const sel = [
     '#stack [data-test=stack-group] button[aria-expanded]',
     '#stack [data-test=stack-tool]',

@@ -86,10 +86,10 @@ test.describe('nav and menu @A', () => {
     await expect(page.locator(MENU_BTN)).toHaveAttribute('aria-expanded', 'false');
     await expect(page.locator('#menu')).toBeHidden();
     await expect.poll(() => new URL(page.url()).hash).toBe('#work');
+    // Poll the distance to 96px, not a lower bound: the smooth scroll passes 92 long before it settles.
     await expect
-      .poll(() => page.evaluate(() => Math.round(document.getElementById('work')!.getBoundingClientRect().top)), { timeout: 5000 })
-      .toBeGreaterThanOrEqual(92);
-    expect(await page.evaluate(() => document.getElementById('work')!.getBoundingClientRect().top)).toBeLessThanOrEqual(100);
+      .poll(() => page.evaluate(() => Math.abs(document.getElementById('work')!.getBoundingClientRect().top - 96)), { timeout: 5000 })
+      .toBeLessThanOrEqual(4);
   });
 
   test('phone menu button has a 44px hit area @A', async ({ page }, info) => {

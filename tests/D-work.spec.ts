@@ -17,7 +17,8 @@ const GREEN = 'rgb(47, 122, 85)';
 const AIR_ON = 'rgb(127, 199, 160)';
 const AIR_OFF = 'rgb(207, 197, 179)';
 
-async function open(page: Page, opts: { reduced?: boolean; hiddenShim?: boolean } = {}) {
+// On phone the diagram lives inside the collapsible Fandom card (v4); open() expands it unless `collapsed`.
+async function open(page: Page, opts: { reduced?: boolean; hiddenShim?: boolean; collapsed?: boolean } = {}) {
   if (opts.reduced) await page.emulateMedia({ reducedMotion: 'reduce' });
   if (opts.hiddenShim) {
     await page.addInitScript(() => {
@@ -26,9 +27,14 @@ async function open(page: Page, opts: { reduced?: boolean; hiddenShim?: boolean 
       Object.defineProperty(document, 'visibilityState', { get: () => ((window as any).__hidden ? 'hidden' : 'visible'), configurable: true });
     });
   }
+  // Paused clock: fake time must not flow in real time, or ticks drift across checkpoints.
   await page.clock.install({ time: FIXED_TIME });
+  await page.clock.pauseAt(new Date(FIXED_TIME.getTime() + 1000));
   await page.goto('/');
   await page.locator('#work').scrollIntoViewIfNeeded();
+  if (page.viewportSize()!.width < 600 && !opts.collapsed) {
+    await page.locator('#work [data-test=work-card][data-key=fd] button[aria-expanded]').click();
+  }
 }
 const tickN = (page: Page, n: number) => page.clock.runFor(TICK * n);
 const diagramRoot = (page: Page) => page.locator('#work [data-test=diagram]');
@@ -351,7 +357,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
 
   for (const c of cards) {
     test(`card ${c.key} starts collapsed with the short line @D`, async ({ page }) => {
-      await open(page);
+      await open(page, { collapsed: true });
       const el = card(page, c.key);
       await expect(el).toHaveCount(1);
       await expect(toggle(el)).toHaveCount(1);
@@ -364,7 +370,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
     });
 
     test(`card ${c.key} toggles open and closed @D`, async ({ page }) => {
-      await open(page);
+      await open(page, { collapsed: true });
       const el = card(page, c.key);
       await toggle(el).scrollIntoViewIfNeeded();
       await toggle(el).click();
@@ -379,7 +385,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
   }
 
   test('toggles are independent; several can be open @D', async ({ page }) => {
-    await open(page);
+    await open(page, { collapsed: true });
     for (const k of ['mp', 'pl', 'e1']) {
       await toggle(card(page, k)).scrollIntoViewIfNeeded();
       await toggle(card(page, k)).click();
@@ -394,7 +400,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
   });
 
   test('MovePhysiQ shot: object-fit contain and order 2 @D', async ({ page }) => {
-    await open(page);
+    await open(page, { collapsed: true });
     const img = card(page, 'mp').locator(`img[alt="${movePhysiq.shotAlt}"]`);
     await expect(img).toHaveCSS('object-fit', 'contain');
     const order = await img.evaluate((el) => {
@@ -406,7 +412,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
   });
 
   test('hit areas reach 44px (dots and toggles) @D', async ({ page }) => {
-    await open(page);
+    await open(page, { collapsed: true });
     const hit = (loc: ReturnType<typeof dots>) =>
       loc.evaluateAll((els) => els.map((e) => {
         const r = e.getBoundingClientRect();
