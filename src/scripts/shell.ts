@@ -152,4 +152,17 @@ if (!prefersReducedMotion()) {
     el.style.transition = `opacity .9s ${ease} ${d}ms, translate .9s ${ease} ${d}ms, transform .3s ease`;
     io.observe(el);
   });
+  // Keyboard users must not focus an invisible element: reveal at once on focus (QA F3).
+  // Keyboard focus only: on a mouse click, moving the element between mousedown and mouseup loses the click.
+  document.addEventListener('focusin', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.matches(':focus-visible')) return;
+    const el = target.closest<HTMLElement>('[data-reveal]');
+    if (el && el.style.opacity === '0') {
+      el.style.transition = 'none';
+      el.style.opacity = '1';
+      el.style.translate = '0 0';
+      io.unobserve(el);
+    }
+  });
 }

@@ -7,4 +7,6 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [sitemap()],
   build: { inlineStylesheets: 'auto' },
+  // Never inline fonts/images as base64 into CSS (keeps CSS small; fonts are preloaded instead).
+  vite: { build: { assetsInlineLimit: 0 } },
 });

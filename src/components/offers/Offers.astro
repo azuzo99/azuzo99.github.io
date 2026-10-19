@@ -30,7 +30,9 @@ import { offers, offersSection as S } from '../../data/offers';
       <div class="panel" data-reveal data-delay="100">
         <div class="track" data-test="offer-track">
           {offers.map((o, i) => (
-            <article role="tabpanel" id={`offer-panel-${i}`} aria-labelledby={`offer-tab-${i}`} data-variant="slider" class="card slider">
+            <article data-variant="slider" class="card slider">
+              {/* role=tabpanel is not allowed on <article>; a display:contents wrapper carries it. */}
+              <div class="tp" role="tabpanel" id={`offer-panel-${i}`} aria-labelledby={`offer-tab-${i}`}>
               <div class="top">
                 <span class="tag"><span class="mono for">FOR</span>{o.tag}</span>
                 <span class="mono count">{o.num} / {S.total}</span>
@@ -54,6 +56,7 @@ import { offers, offersSection as S } from '../../data/offers';
                   ))}
                 </div>
               </div>
+            </div>
             </article>
           ))}
         </div>
@@ -95,6 +98,7 @@ import { offers, offersSection as S } from '../../data/offers';
 </section>
 
 <style>
+  .tp { display: contents; }
   #services { position: relative; }
   .sec { max-width: 1180px; margin: 0 auto; padding: clamp(16px,2vw,24px) var(--gutter) clamp(56px,7vw,96px); }
   .mono { font-family: var(--font-mono); font-size: 12px; }
