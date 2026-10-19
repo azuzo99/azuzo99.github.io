@@ -1,4 +1,36 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by component A (side progress rail, >=1340px).
+// Side progress rail, >= 1340px (v4:L39-54, design.md §3, §8).
+import { chapters, ui } from '../../data/site';
 ---
-<aside aria-label="Page progress" style="display: none;"></aside>
+<aside aria-label={ui.railLabel} class="rail" data-rail>
+  <div class="track">
+    <div class="fill" data-test="rail-fill"></div>
+  </div>
+  <div class="list">
+    {chapters.map((c) => (
+      <a href={`#${c.id}`} data-chapter-link={c.id}>
+        <span class="dot"></span>
+        <span class="num">{c.num}</span>
+        <span class="label">{c.label}</span>
+      </a>
+    ))}
+  </div>
+</aside>
+
+<style>
+  .rail { display: none; }
+  @media (min-width: 1340px) {
+    .rail { position: fixed; left: 26px; top: 50%; transform: translateY(-50%); z-index: 40; display: flex; gap: 14px; }
+  }
+  .track { position: relative; width: 1px; background: var(--rail-track); }
+  .fill { position: absolute; left: 0; top: 0; width: 1px; height: 100%; background: var(--ink); transform: scaleY(0); transform-origin: top; transition: transform .12s linear; will-change: transform; }
+  .list { display: flex; flex-direction: column; gap: 20px; margin-left: -19px; }
+  a { display: flex; align-items: center; gap: 12px; color: var(--muted-3); }
+  a:hover { color: var(--ink); }
+  a[aria-current='true'] { color: var(--ink); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 1px solid var(--muted-dark); box-sizing: border-box; transition: all .3s; }
+  a[aria-current='true'] .dot, a[data-past] .dot { background: var(--ink); border-color: var(--ink); }
+  .num { font-family: var(--font-mono); font-size: 12px; }
+  .label { font-size: 13px; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+  a[aria-current='true'] .label { opacity: 1; }
+</style>

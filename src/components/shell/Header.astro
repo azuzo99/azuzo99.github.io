@@ -1,6 +1,71 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by component A (header, nav, menu, top bar).
+// Header: logo, pill nav (>= 860), socials, section menu (< 860), CTA, top progress bar (v4:L56-83).
+import { Image } from 'astro:assets';
+import { site, links, chapters, navItems, social, ui } from '../../data/site';
 ---
-<header style="position: sticky; top: 14px; z-index: 50; padding: 0 var(--gutter);">
-  <nav aria-label="Main" style="max-width: 1180px; margin: 0 auto; height: 56px;">Placeholder: Header</nav>
+<header class="hdr">
+  <nav aria-label="Main" class="nav">
+    <a href="#top" class="logo">
+      <span class="tile">{site.initials}</span>
+      <span class="who"><span>{site.name}</span><span class="sub" data-nav-sub data-default={site.role}>{site.role}</span></span>
+    </a>
+    <div class="pill">
+      {navItems.map((n) => (
+        <a href={`#${n.id}`} data-chapter-link={n.id}>{n.label}</a>
+      ))}
+    </div>
+    <div class="right">
+      <div class="socials">
+        {social.map((s) => (
+          <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.label} class="soc"><Image src={s.icon} alt="" width={16} height={16} /></a>
+        ))}
+      </div>
+      <button type="button" class="menu-btn hit" aria-label={ui.menuLabel} aria-expanded="false" aria-controls="menu" data-menu-btn data-closed={ui.menuIcon.closed} data-open={ui.menuIcon.open}>{ui.menuIcon.closed}</button>
+      <a href={links.calendly} target="_blank" rel="noreferrer" class="book hit"><span class="bdot"></span>{ui.bookCall}</a>
+    </div>
+    <div class="bar" data-test="bar-fill"></div>
+  </nav>
+  <div id="menu" class="menu" hidden>
+    {chapters.map((c) => (
+      <a href={`#${c.id}`} data-chapter-link={c.id}><span class="mnum">{c.num}</span>{c.label}</a>
+    ))}
+  </div>
 </header>
+
+<style>
+  .hdr { position: sticky; top: 14px; z-index: 50; padding: 0 clamp(14px, 3vw, 32px); }
+  .nav { max-width: var(--container); margin: 0 auto; background: var(--nav-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 999px; padding: 8px 8px 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; position: relative; overflow: hidden; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; letter-spacing: -.01em; white-space: nowrap; }
+  .tile { width: 32px; height: 32px; border-radius: 10px; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-size: 12px; font-weight: 600; letter-spacing: -.02em; flex: none; }
+  .who { display: flex; flex-direction: column; gap: 2px; line-height: 1.05; }
+  .sub { font-size: 11px; font-weight: 400; color: var(--muted-2); letter-spacing: 0; }
+
+  .pill { display: none; align-items: center; gap: 2px; flex-wrap: wrap; justify-content: center; padding: 3px; border-radius: 999px; background: rgba(251, 246, 238, 0.7); border: 1px solid var(--border); }
+  .pill a { font-size: 14px; padding: 8px 14px; border-radius: 999px; background: transparent; color: var(--muted); transition: background .3s ease, color .3s ease; }
+  .pill a:hover { color: var(--ink); }
+  .pill a[aria-current='true'] { background: var(--ink); color: var(--bg); }
+  .pill a[aria-current='true']:hover { color: var(--bg); }
+
+  .right { display: flex; align-items: center; gap: 6px; }
+  .socials { display: none; align-items: center; gap: 6px; }
+  .soc { width: 38px; height: 38px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: grid; place-items: center; }
+  .soc:hover { background: var(--white); }
+  .soc :global(img) { width: 16px; height: 16px; }
+  .menu-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg); color: var(--ink); font: inherit; font-size: 18px; line-height: 1; cursor: pointer; display: grid; place-items: center; flex: none; padding: 0; }
+  .book { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--bg); padding: 10px 18px 10px 12px; border-radius: 999px; font-weight: 500; font-size: 14px; white-space: nowrap; }
+  .book:hover { background: var(--d-33); color: var(--bg); }
+  .bdot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .bar { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--ink); transform: scaleX(0); transform-origin: left; will-change: transform; }
+
+  .menu { max-width: var(--container); margin: 8px auto 0; background: rgba(251, 246, 238, 0.97); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 20px; padding: 8px; box-shadow: var(--shadow-menu); display: flex; flex-direction: column; gap: 2px; }
+  .menu[hidden] { display: none; }
+  .menu a { display: flex; align-items: center; gap: 14px; min-height: 46px; padding: 0 14px; border-radius: 14px; background: transparent; color: var(--ink); font-size: 16px; font-weight: 500; }
+  .menu a[aria-current='true'] { background: var(--ink); color: var(--bg); }
+  .mnum { font-family: var(--font-mono); font-size: 12px; opacity: .6; width: 20px; }
+
+  @media (min-width: 860px) {
+    .pill { display: flex; }
+    .socials { display: flex; }
+    .menu-btn, .menu { display: none; }
+  }
+</style>
