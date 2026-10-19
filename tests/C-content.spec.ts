@@ -30,7 +30,8 @@ test.describe('@C about', () => {
   });
 
   test('"Full experience" link is hidden on phone, visible with LinkedIn href elsewhere', async ({ page }) => {
-    const link = about(page).getByRole('link', { name: aboutData.experienceLabel });
+    // includeHidden: getByRole skips display:none elements, which is how phone hides it.
+    const link = about(page).getByRole('link', { name: aboutData.experienceLabel, includeHidden: true });
     await expect(link).toHaveCount(1); // present in the DOM, only hidden by CSS on phone
     if (isPhone(page)) {
       await expect(link).toBeHidden();

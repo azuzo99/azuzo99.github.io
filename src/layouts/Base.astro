@@ -79,6 +79,11 @@ const person = {
           var content = c.offsetHeight - pb;
           c.style.top = Math.round(content <= avail ? 90 + (avail - content) / 2 : vh - content - 16) + 'px';
         });
+        // Deep link: jump without the smooth animation so /#id lands at scroll-margin-top (96px) immediately.
+        if (location.hash.length > 1) {
+          var t = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (t) { var r = document.documentElement; r.style.scrollBehavior = 'auto'; t.scrollIntoView(); r.style.scrollBehavior = ''; }
+        }
       })();
     </script>
   </body>
