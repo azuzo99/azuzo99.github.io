@@ -1,8 +1,70 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by component E - see docs/design.md §4-§5.
+// Trusted by (v4:L723-730, L1108-1117; design.md §6.5, §7; inv §3.9). >= 600 marquee, phone single rotating logo.
+import { Image } from 'astro:assets';
+import { trusted, trustedSection } from '../../data/trusted';
+
+const bg = (m: number) => (m === 4 ? '#252D3D' : m === 3 ? '#F0F0F0' : '#FFFFFF');
+const imgStyle = (m: number) =>
+  m === 1 ? 'width: 100%; height: 100%; object-fit: cover; display: block;'
+  : m === 4 ? 'width: 100%; height: 100%; object-fit: contain; display: block;'
+  : m === 2 || m === 3 ? 'width: 28px; height: 28px; object-fit: contain;'
+  : 'width: 22px; height: 22px; object-fit: contain;';
 ---
-<section id="trusted" aria-label="Worked with and trusted by">
+<section id="trusted" aria-label={trustedSection.ariaLabel}>
   <div class="sec" style="max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) 12px;">
-    <p style="margin: 0; height: 120px;">Placeholder: Trusted by</p>
+    <div data-reveal style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 22px 26px; border-radius: 16px; border: 1px solid #E4DACA; background: #FBF6EE;">
+      <span style="font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: #5C5850; white-space: nowrap;">{trustedSection.label}</span>
+      <div class="tr-wrap" data-only="notphone">
+        <div class="marquee" data-test="marquee">
+          <div class="track">
+          {[0, 1].map((n) => (
+            <div class="set" data-only={n ? 'motion' : undefined} aria-hidden={n ? 'true' : undefined}>
+              {trusted.map((l) => (
+                <span class="logo"><span class="tile" style={`width: ${l.mode === 4 ? 96 : 36}px; background: ${bg(l.mode)};`}><Image src={l.logo} alt="" width={l.mode === 4 ? 192 : 72} height={72} loading="lazy" style={imgStyle(l.mode)} /></span><span class="name">{l.name}</span></span>
+              ))}
+            </div>
+          ))}
+          </div>
+        </div>
+      </div>
+      <div class="tr-wrap tr-phone" data-only="phone" data-rotator>
+        {trusted.map((l, i) => (
+          <div class="cur" data-logo hidden={i !== 0}>
+            <span class="logo"><span class="tile" style={`width: ${l.mode === 4 ? 96 : 36}px; background: ${bg(l.mode)};`}><Image src={l.logo} alt="" width={l.mode === 4 ? 192 : 72} height={72} loading="lazy" style={imgStyle(l.mode)} /></span><span class="name">{l.name}</span></span>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 </section>
+
+<style is:global>
+  #trusted .tr-wrap { flex: 1 1 0; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%); }
+  #trusted .tr-phone { flex: 1 1 100%; display: none; }
+  /* The animated element keeps a fixed box (Playwright needs a stable target); a registered property drives the track. */
+  @property --az-marquee { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @keyframes azMarqueeProgress { from { --az-marquee: 0; } to { --az-marquee: 1; } }
+  #trusted .marquee { animation: azMarqueeProgress 38s linear infinite; }
+  #trusted .track { display: flex; gap: 36px; width: max-content; padding-right: 36px; transform: translateX(calc(var(--az-marquee) * -50%)); }
+  #trusted .marquee:hover { animation-play-state: paused; }
+  #trusted .set { display: contents; }
+  #trusted .logo { display: flex; align-items: center; gap: 10px; flex: none; }
+  #trusted .tile { height: 36px; border-radius: 10px; overflow: hidden; border: 1px solid #E4DACA; box-sizing: border-box; display: grid; place-items: center; flex: none; }
+  #trusted .name { font-size: 16px; font-weight: 600; letter-spacing: -.02em; color: #111111; white-space: nowrap; }
+  #trusted .cur { display: flex; justify-content: center; animation: azFadeUp .5s ease both; }
+  #trusted .cur[hidden] { display: none; }
+  @media (max-width: 599px) {
+    #trusted [data-only=notphone] { display: none; }
+    #trusted .tr-phone { display: block; }
+  }
+  @media (min-width: 600px) { #trusted [data-only=phone] { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    #trusted [data-only=motion] { display: none; }
+    #trusted .tr-wrap { -webkit-mask-image: none; mask-image: none; }
+    #trusted .track { width: auto; flex-wrap: wrap; padding-right: 0; gap: 16px 36px; transform: none; }
+  }
+</style>
+
+<script>
+  import '../../scripts/tail';
+</script>
