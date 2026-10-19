@@ -7,7 +7,14 @@ import '@fontsource/geist-mono/400.css';
 import '@fontsource/geist-mono/500.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
-import fontMain from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-500-normal.woff2?url';
+import sans400 from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-400-normal.woff2?url';
+import sans500 from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-500-normal.woff2?url';
+import sans600 from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-600-normal.woff2?url';
+import mono400 from '@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url';
+import mono500 from '@fontsource/geist-mono/files/geist-mono-latin-500-normal.woff2?url';
+
+// Preload every used latin face: a late swap reflows text above deep-linked sections (CLS).
+const fonts = [sans400, sans500, sans600, mono400, mono500];
 
 interface Props {
   title?: string;
@@ -48,7 +55,7 @@ const person = {
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#FBF6EE" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preload" href={fontMain} as="font" type="font/woff2" crossorigin />
+    {fonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
