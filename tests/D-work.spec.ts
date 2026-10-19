@@ -412,7 +412,7 @@ test.describe('phone tap-to-expand (#12) @D', () => {
   });
 
   test('hit areas reach 44px (dots and toggles) @D', async ({ page }) => {
-    await open(page, { collapsed: true });
+    await open(page); // expanded: the dots live inside the Fandom body on phone
     const hit = (loc: ReturnType<typeof dots>) =>
       loc.evaluateAll((els) => els.map((e) => {
         const r = e.getBoundingClientRect();
