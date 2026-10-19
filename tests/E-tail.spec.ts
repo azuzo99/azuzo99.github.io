@@ -266,7 +266,9 @@ test.describe('contact', () => {
 test('phone: controls reach a 44px hit area @E', async ({ page }) => {
   only(isPhone(page), 'phone only');
   await open(page);
-  await page.locator('#stack [data-test=stack-group] button[aria-expanded]').first().click();
+  // Open every group (multi-open) so all tools are visible before measuring.
+  const heads = page.locator('#stack [data-test=stack-group] button[aria-expanded]');
+  for (let g = 0; g < (await heads.count()); g++) await heads.nth(g).click();
   const sel = [
     '#stack [data-test=stack-group] button[aria-expanded]',
     '#stack [data-test=stack-tool]',
