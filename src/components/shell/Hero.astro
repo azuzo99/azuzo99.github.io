@@ -1,8 +1,182 @@
 ---
-// PLACEHOLDER (scaffold). Replaced by component A (hero incl. tech-group row).
+// Hero (v4:L82-171): one DOM, restyled per band with CSS grid areas (design.md §3 rule 1).
+// DOM order is the visible copy order: head, intro (mid only), CTA group, intro (desktop + phone), photo.
+import { Image, Picture } from 'astro:assets';
+import { hero, techGroups } from '../../data/hero';
+import { links, social, ui } from '../../data/site';
 ---
 <section id="top" data-chapter="00" aria-labelledby="top-h" style="scroll-margin-top: 0;">
-  <div class="sec" style="max-width: 1180px; margin: 0 auto; padding: 0 var(--gutter) var(--section-pb);">
-    <h1 id="top-h" style="margin: 0; height: 800px;">Placeholder: Data &amp; AI Engineer</h1>
+  <div class="sec">
+    <div class="hero">
+      <div class="head">
+        <div data-reveal class="status-row">
+          <span class="status"><span class="pulse"></span>{hero.status}</span>
+        </div>
+        <h1 id="top-h" data-reveal>{hero.titleLines[0]}<br />{hero.titleLines[1]}</h1>
+        <div data-reveal class="pills">
+          <span class="spec">{hero.specializedIn}</span>
+          {hero.pills.map((p, i) => <span class:list={['pill', { on: i === 0 }]}>{p}</span>)}
+        </div>
+      </div>
+
+      <p class="intro intro-mid" data-reveal>{hero.intro}</p>
+
+      <div class="bottom">
+        <div class="cta" data-reveal>
+          <a href={links.calendly} target="_blank" rel="noreferrer" class="book">{ui.bookIntro} <span>{ui.bookIntroArrow}</span></a>
+          <div class="row">
+            <div class="socials">
+              {social.map((s) => (
+                <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.label} class="soc hit">
+                  <Image src={s.icon} alt="" width={18} height={18} />
+                  <span class="lbl">{s.label}</span>
+                </a>
+              ))}
+            </div>
+            <a href="#services" class="offer">{ui.offerLink}</a>
+          </div>
+        </div>
+        <p class="intro intro-main" data-reveal data-delay="150">{hero.intro}</p>
+      </div>
+
+      <div class="photo" data-test="hero-photo" data-reveal data-delay="150">
+        <Picture
+          src={hero.photo}
+          alt={hero.photoAlt}
+          formats={['avif']}
+          fallbackFormat="webp"
+          widths={[300, 350, 600, 700]}
+          sizes="(max-width: 599px) calc(100vw - 40px), (max-width: 939px) 40vw, 300px"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <div class="techrow">
+      <div class="groups">
+        {techGroups.map((g, gi) => {
+          const a = (gi * 2) % g.items.length;
+          return (
+            <div class="tg" data-test="tech-group" data-reveal data-delay={g.delay}>
+              <span class="tl">
+                <span class="tnum">{g.num} | {g.label}</span>
+                <span class="tname" data-tech-name>{g.items[a].name}</span>
+              </span>
+              <span class="chips">
+                {g.items.map((t, i) => (
+                  <span class="chip" title={t.name} data-active={i === a ? '' : undefined}>
+                    <span class="mono" aria-hidden="true">{t.mono}</span>
+                    {t.icon && <Image src={t.icon} alt={t.name} width={36} />}
+                  </span>
+                ))}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   </div>
 </section>
+
+<script>
+  import '../../scripts/shell';
+</script>
+
+<style>
+  .hero { max-width: var(--container); margin: 0 auto; padding: clamp(24px, 8vw, 112px) var(--gutter) clamp(32px, 5vw, 64px); display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .head { grid-area: head; min-width: 0; display: flex; flex-direction: column; gap: clamp(18px, 3vw, 28px); }
+  .intro-mid { grid-area: imid; }
+  .bottom { display: contents; }
+  .cta { grid-area: cta; }
+  .intro-main { grid-area: intro; }
+  .photo { grid-area: photo; }
+
+  .status-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink); background: var(--card); border: 1px solid var(--border); padding: 7px 14px; border-radius: 999px; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green-deep); animation: azPulse 2.6s ease-in-out infinite; }
+  h1 { margin: 0; font-weight: 500; font-size: clamp(46px, 11vw, 156px); line-height: .9; letter-spacing: -.055em; color: var(--ink); }
+  .pills { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .spec { font-size: 14px; color: var(--muted-2); margin-right: 4px; white-space: nowrap; }
+  .pill { font-size: clamp(13px, 1.4vw, 14px); font-weight: 500; padding: clamp(5px, .8vw, 7px) clamp(11px, 1.4vw, 14px); border-radius: 999px; border: 1px solid var(--border-strong); }
+  .pill.on { background: var(--ink); color: var(--bg); border-color: transparent; }
+
+  .intro { margin: 0; color: var(--ink); font-weight: 500; letter-spacing: -.01em; }
+  .intro-mid { display: none; }
+
+  .photo { position: relative; border-radius: 14px; overflow: hidden; background: var(--hover-bg); filter: grayscale(1) contrast(1.05); aspect-ratio: 4 / 5; }
+  .photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  .cta { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .book { background: var(--ink); color: var(--bg); font-weight: 500; font-size: 16px; border-radius: 999px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 24px; }
+  .book:hover { background: var(--d-33); color: var(--bg); }
+  .row { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .socials { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .soc { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--card); border: 1px solid var(--border); color: var(--ink); padding: 14px 16px; border-radius: 999px; font-weight: 500; font-size: 16px; }
+  .soc:hover { background: var(--hover-bg); }
+  .soc :global(img) { width: 18px; height: 18px; }
+  .offer { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); padding: 6px 4px 4px; font-weight: 500; font-size: 16px; border-bottom: 1.5px solid var(--ink); }
+  .offer:hover { opacity: .7; }
+
+  .techrow { display: none; max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter) clamp(40px, 6vw, 72px); }
+  .groups { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tg { flex: 1 1 300px; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 14px 16px 14px 20px; border-radius: 28px; background: var(--card); border: 1px solid var(--border); transition: border-color .25s ease, background .25s ease; }
+  .tl { flex: 1 0 130px; display: flex; flex-direction: column; gap: 2px; min-width: 130px; }
+  .tnum { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--muted-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tname { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: opacity .3s; }
+  .chips { display: flex; gap: 6px; flex: none; }
+  .chip { position: relative; width: 34px; height: 34px; border-radius: 50%; background: var(--white); border: 1.5px solid var(--border); box-sizing: border-box; display: grid; place-items: center; opacity: .75; transition: transform .45s var(--ease-out), border-color .45s ease, opacity .45s ease; }
+  .chip[data-active] { border-color: var(--ink); transform: scale(1.12); opacity: 1; }
+  .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-mono); font-size: 9px; color: var(--muted-2); }
+  .chip :global(img) { position: relative; width: 18px; height: 18px; object-fit: contain; background: var(--white); border-radius: 50%; }
+
+  /* phone: head, photo (21/9 crop), CTA, intro */
+  @media (max-width: 599px) {
+    .hero { grid-template-areas: 'head' 'photo' 'cta' 'intro'; }
+    .spec { display: none; }
+    .photo { aspect-ratio: 21 / 9; margin-top: 20px; }
+    .photo :global(img) { object-position: 50% 15.66%; }
+    .cta { margin-top: 18px; align-items: stretch; gap: 8px; width: 100%; }
+    .row { align-items: stretch; gap: 8px; }
+    .offer { display: none; }
+    .socials { gap: 8px; }
+    .soc { gap: 8px; min-height: 48px; padding: 0; font-size: 14px; }
+    .soc :global(img) { width: 16px; height: 16px; }
+    .book:hover { background: var(--ink); }
+    .intro-main { margin-top: 16px; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.35; text-align: left; text-wrap: balance; max-width: 30ch; }
+  }
+
+  /* mid 600-939: intro + CTA left, photo 40% right */
+  @media (min-width: 600px) and (max-width: 939px) {
+    .hero { grid-template-columns: minmax(0, 1fr) 40%; grid-template-areas: 'head head' 'imid photo' 'cta photo'; column-gap: 28px; row-gap: 28px; grid-template-rows: auto auto 1fr; }
+    .head { margin-bottom: 8px; }
+    .intro-mid { display: block; align-self: start; font-size: 20px; line-height: 1.4; text-wrap: pretty; }
+    .intro-main { display: none; }
+    .photo { align-self: stretch; }
+    .cta { align-self: end; align-items: stretch; width: auto; }
+    .row { align-items: stretch; }
+    .offer { align-self: flex-start; }
+    .techrow { display: block; }
+  }
+
+  /* desktop >= 940 */
+  @media (min-width: 940px) {
+    .hero { grid-template-areas: 'head' 'photo' 'bottom'; row-gap: 0; }
+    .bottom { display: flex; grid-area: bottom; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: clamp(16px, 3vw, 28px); margin-top: clamp(18px, 4vw, 48px); }
+    .cta { grid-area: auto; }
+    .intro-main { grid-area: auto; max-width: 30ch; text-align: right; font-size: clamp(16px, 1.5vw, 20px); line-height: 1.35; text-wrap: balance; }
+    .photo { width: 100%; max-width: 300px; justify-self: end; margin-top: clamp(20px, 4vw, 40px); }
+    .book { display: inline-flex; padding: 16px 26px; justify-content: flex-start; }
+    .row { flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .socials { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .soc { padding: 15px; }
+    .lbl { display: none; }
+    .offer { margin: 0 6px 0 14px; padding-top: 4px; }
+    .techrow { display: block; }
+  }
+  @media (min-width: 980px) {
+    .hero { grid-template-columns: minmax(0, 1fr) 300px; grid-template-areas: 'head photo' 'bottom bottom'; column-gap: clamp(20px, 4vw, 40px); }
+    .photo { margin-top: 0; }
+  }
+</style>
