@@ -61,7 +61,7 @@ function initDiagram(fig: HTMLElement) {
   fig.querySelector('[data-test=arch-prev]')!.addEventListener('click', () => jump(archStep(archTicker.value) - 1));
   fig.querySelector('[data-test=arch-next]')!.addEventListener('click', () => jump(archStep(archTicker.value) + 1));
 
-  // The loop starts once the page has loaded (not while assets are still arriving), so a visitor meets step 01.
+  // The loop starts on mount (v4); `begin` is also called by the first user jump.
   let started = false;
   const begin = () => {
     if (started) return;
@@ -69,8 +69,7 @@ function initDiagram(fig: HTMLElement) {
     archTicker.subscribe(render);
   };
   render(archTicker.value);
-  if (document.readyState === 'complete') begin();
-  else window.addEventListener('load', begin, { once: true });
+  begin();
 }
 
 function initCards(root: HTMLElement) {
