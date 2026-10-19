@@ -6,18 +6,6 @@ import { chapters } from '../data/site';
 
 const $$ = <T extends HTMLElement>(sel: string) => Array.from(document.querySelectorAll<T>(sel));
 
-// ---- deep link: html { scroll-behavior: smooth } animates the load-time fragment jump, so /#stack is still
-// travelling (e.g. 110-265px) when measured. Jump instantly; scroll-margin-top gives the 96px offset.
-if (location.hash.length > 1) {
-  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  if (target) {
-    const root = document.documentElement;
-    root.style.scrollBehavior = 'auto';
-    target.scrollIntoView();
-    root.style.scrollBehavior = '';
-  }
-}
-
 // ---- progress fills + active section (v4:L805-822) ----
 const railFill = document.querySelector<HTMLElement>('[data-test=rail-fill]');
 const barFill = document.querySelector<HTMLElement>('[data-test=bar-fill]');
