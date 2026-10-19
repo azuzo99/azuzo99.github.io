@@ -1,0 +1,6 @@
+---
+// Empty slot where work.ts injects the phone-only "Show details" button (absent from the DOM at >= 600).
+interface Props { variant: 'dark' | 'light' }
+const { variant } = Astro.props;
+---
+<div class="wk-slot" data-wk-slot data-variant={variant}></div>
