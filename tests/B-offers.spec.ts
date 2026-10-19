@@ -122,14 +122,13 @@ test.describe('scrollMode (desktop 1440x900)', () => {
       if (i === 0) await scrollToP(page, 0.9); // come from below
       await tabs(page).nth(i).click();
       const want = g.top + g.total * (i / 3) + 4;
+      // Poll the distance, not a lower bound: tab 0 scrolls up from below.
       await expect
         .poll(async () => {
           await page.clock.runFor(100);
-          return page.evaluate(() => window.scrollY);
+          return Math.abs((await page.evaluate(() => window.scrollY)) - want);
         }, { timeout: 5000 })
-        .toBeGreaterThanOrEqual(want - 2);
-      const y = await page.evaluate(() => window.scrollY);
-      expect(Math.abs(y - want)).toBeLessThanOrEqual(2);
+        .toBeLessThanOrEqual(2);
     });
   }
 
