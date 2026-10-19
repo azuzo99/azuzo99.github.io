@@ -1,0 +1,85 @@
+---
+// Page shell: head (SEO, fonts, JSON-LD), skip link, initial sticky-pause tops (design.md §4, §8, §9).
+import '@fontsource/schibsted-grotesk/400.css';
+import '@fontsource/schibsted-grotesk/500.css';
+import '@fontsource/schibsted-grotesk/600.css';
+import '@fontsource/geist-mono/400.css';
+import '@fontsource/geist-mono/500.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import fontMain from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-500-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Adam Zuzo | Data & AI Engineer',
+  description = 'Hi, I’m Adam - a monetization data engineer. I turn ads and revenue data into platforms that help companies grow monetization, and build AI apps on top - without a scary cloud bill.',
+} = Astro.props;
+
+const site = Astro.site?.href ?? 'https://azuzo99.github.io/';
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL('/og.png', site).href;
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Adam Zuzo',
+  jobTitle: 'Data & AI Engineer',
+  url: site,
+  email: 'mailto:zuzoadam@gmail.com',
+  address: { '@type': 'PostalAddress', addressLocality: 'Poznan', addressCountry: 'PL' },
+  sameAs: [
+    'https://www.linkedin.com/in/adam-zuzo/',
+    'https://www.instagram.com/zuzo_adam/',
+    'https://github.com/azuzo99',
+  ],
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#FBF6EE" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={fontMain} as="font" type="font/woff2" crossorigin />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div style="min-height: 100vh; position: relative;">
+      <slot />
+    </div>
+    <script is:inline>
+      // Initial sticky-pause `top` before first paint (v4:L873-888 formula). shell.ts keeps it updated.
+      (function () {
+        var vh = window.innerHeight, avail = vh - 96;
+        document.querySelectorAll('[data-pause]').forEach(function (c) {
+          var pb = parseFloat(getComputedStyle(c).paddingBottom) || 0;
+          var content = c.offsetHeight - pb;
+          c.style.top = Math.round(content <= avail ? 90 + (avail - content) / 2 : vh - content - 16) + 'px';
+        });
+      })();
+    </script>
+  </body>
+</html>

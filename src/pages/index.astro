@@ -1,0 +1,28 @@
+---
+// Section order + mounts only (design.md §4). Owned by scaffold.
+import Base from '../layouts/Base.astro';
+import Rail from '../components/shell/Rail.astro';
+import Header from '../components/shell/Header.astro';
+import Hero from '../components/shell/Hero.astro';
+import Offers from '../components/offers/Offers.astro';
+import About from '../components/content/About.astro';
+import Work from '../components/work/Work.astro';
+import Community from '../components/content/Community.astro';
+import Stack from '../components/tail/Stack.astro';
+import Trusted from '../components/tail/Trusted.astro';
+import Contact from '../components/tail/Contact.astro';
+---
+<Base>
+  <Rail />
+  <Header />
+  <main id="main">
+    <Hero />
+    <Offers />
+    <About />
+    <Work />
+    <Community />
+    <Stack />
+    <Trusted />
+    <Contact />
+  </main>
+</Base>
