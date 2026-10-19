@@ -1,0 +1,17 @@
+---
+// Tool / tag chip with a 14px icon (v4:L359, L493, L509). `variant` picks the card-specific surface.
+import type { ImageMetadata } from 'astro';
+interface Props {
+  name: string;
+  icon: ImageMetadata | null;
+  variant: 'mp' | 'fd' | 'tag';
+}
+const { name, icon, variant } = Astro.props;
+const surface = {
+  mp: 'background: #FBF6EE; color: #111111;',
+  fd: 'background: #FBF6EE; border: 1px solid #E4DACA;',
+  tag: 'background: #FBF6EE; border: 1px solid #E4DACA; color: #111111;',
+}[variant];
+const imgStyle = 'width: 14px; height: 14px; object-fit: contain;' + (variant === 'tag' ? ' background: #FFFFFF; border-radius: 3px;' : '');
+---
+<span style={`display: inline-flex; align-items: center; gap: 7px; font-size: 13px; padding: 6px 12px 6px 8px; border-radius: 999px; ${surface}`}>{icon && <img src={icon.src} width={icon.width} height={icon.height} alt="" loading="lazy" style={imgStyle} />}{name}</span>

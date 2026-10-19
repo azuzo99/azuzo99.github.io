@@ -1,0 +1,6 @@
+---
+// Green "FOR <audience>" pill (v4:L350, L376, L504 ...). Same markup everywhere; `small` = 4px/12px/4px/4px padding variant is the only one used.
+interface Props { label: string }
+const { label } = Astro.props;
+---
+<span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; padding: 4px 12px 4px 4px; border-radius: 999px; background: #7FC7A0; color: #111111; white-space: nowrap;"><span style="font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: .06em; padding: 3px 7px; border-radius: 999px; background: #111111; color: #7FC7A0;">FOR</span>{label}</span>
