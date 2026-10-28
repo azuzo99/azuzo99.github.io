@@ -8,11 +8,21 @@ export const contactSection = {
   num: '(06)',
   heading: "Let’s talk.",
   /** notPhone (v4:L740) */
-  body: '45 minutes, free, no slides. Bring your idea or challenge - an app for your business, a slow pipeline, a scary AWS bill, a team to train - and leave with a clear next step.',
+  body: '45 minutes, free, no slides. Bring your idea or challenge - an app for your business, a slow pipeline, a scary AWS bill, a team to train - and leave with a written next step, whether or not you hire me. If I am not the right person, I will say so on the call and point you to someone who is.',
   /** phone (v4:L741) */
-  bodyShort: '45 minutes, free, no slides. Bring your challenge - leave with a clear next step.',
+  bodyShort: '45 minutes, free, no slides. Bring your challenge - leave with a written next step, whether or not you hire me.',
   /** one text node in v4 (L742) */
   cta: { label: 'Book a free 45-min intro ↗', href: links.calendly },
+  /**
+   * Low-friction second path, visually subordinate to the call. Rendered only when
+   * `links.intakeForm` is set, so an unpublished form never ships a dead link.
+   */
+  secondary: {
+    label: 'Not ready for a call?',
+    text: 'Send me the problem in 2 minutes →',
+    href: links.intakeForm,
+    note: 'I reply to every one within two working days.',
+  },
   /** notPhone row trailing arrow (v4:L758) */
   rowArrow: '↗',
 } as const;
@@ -26,9 +36,9 @@ export interface ContactLink {
 }
 
 export const contacts: ContactLink[] = [
-  { label: 'LinkedIn', icon: img.linkedin, sub: 'Projects, consulting, recruiting', href: links.linkedin },
-  { label: 'Instagram', icon: img.instagram, sub: '1:1 mentoring & small-business projects', href: links.instagram },
-  { label: 'GitHub', icon: img.github, sub: '@azuzo99', href: links.github },
+  { label: 'LinkedIn', icon: img.linkedin, sub: 'Consulting enquiries and company projects', href: links.linkedin },
+  { label: 'Instagram', icon: img.instagram, sub: 'Small-business projects and 1:1 mentoring', href: links.instagram },
+  { label: 'GitHub', icon: img.github, sub: '@azuzo99 - code and open-source work', href: links.github },
 ];
 
 /** Copy-email row (notPhone) / button (phone). */
@@ -50,5 +60,5 @@ export const email = {
 export const footer = {
   copyright: '© 2026 Adam Zuzo | Poznan / Warsaw, Poland',
   /** notPhone only */
-  tagline: 'One part data engineer, one part cloud cost-cutter, full-time problem solver.',
+  tagline: 'Data engineer, cloud cost-cutter, and the person who actually builds it.',
 } as const;

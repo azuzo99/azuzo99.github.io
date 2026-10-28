@@ -12,6 +12,15 @@ function grab(src: string, key: string): string {
   return m[2];
 }
 
+/** Same idea, but anchored on a literal prefix when the key alone is not unique. */
+function grabAfter(src: string, prefix: string): string {
+  const i = src.indexOf(prefix);
+  if (i < 0) throw new Error(`C-data: ${prefix} not found`);
+  const m = src.slice(i).match(/:\s*(['"])(.*?)\1/);
+  if (!m) throw new Error(`C-data: value after ${prefix} not found`);
+  return m[2];
+}
+
 export const hrefs = {
   linkedin: grab(siteSrc, 'linkedin'),
   meetupClaude: grab(siteSrc, 'meetupClaude'),
@@ -30,4 +39,8 @@ export const aboutData = {
   badgeShort: grab(aboutSrc, 'badgeShort'),
   experienceLabel: grab(aboutSrc, 'label'),
   certsLabel: grab(aboutSrc, 'certsLabel'),
+  certAwsTitle: grab(aboutSrc, 'title'),
+  certAwsDetail: grab(aboutSrc, 'detail'),
+  speakerTitle: grabAfter(aboutSrc, "title: 'Active"),
+  communitiesTitle: grabAfter(aboutSrc, "title: 'tech"),
 };

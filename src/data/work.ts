@@ -7,7 +7,8 @@ import movephysiqShot from '../assets/photos/movephysiq-shot.webp';
 export const workSection = {
   num: '(03)',
   heading: 'Selected work.',
-  lead: 'Real systems, real users, real scale.',
+  lead:
+    'Six systems, from a one-person practice to ~50 TB a day. The FOR chip on each one tells you which of the three offers it belongs to.',
   /** phone (<600) tap-to-expand labels; icons in ui.toggleIcon (v4:L1098, L1163) */
   toggle: { show: 'Show details', hide: 'Hide details' },
 } as const;
@@ -23,14 +24,14 @@ export interface LabeledIcon {
 // ---------- MovePhysiQ (v4:L339-365) ----------
 export const movePhysiq = {
   key: 'mp' as WorkKey,
-  status: 'In progress',
+  status: 'Paying client',
   /** notPhone only */
   category: 'AI application | HealthTech',
   audience: ['Small businesses & solo founders'],
   title: 'MovePhysiQ',
   /** phone collapsed line (`wkS.mp`) */
   short: 'Patient platform for a physiotherapy practice.',
-  body: 'A premium patient platform for a physiotherapy practice. One calm system replaces spreadsheets for the patient - and gives the therapist a single place to run the whole collaboration.',
+  body: 'A premium patient platform for a physiotherapy practice, built for a paying client. One calm system replaces spreadsheets for the patient - and gives the therapist a single place to run the whole collaboration.',
   features: [
     { n: '01', t: "Training plans imported straight from the therapist’s Excel / Google Sheets" },
     { n: '02', t: 'Progress roadmap, curated knowledge library, guided onboarding' },
@@ -54,11 +55,12 @@ export const fandom = {
   title: 'Ads & Revenue Data Platform @ Fandom',
   /** phone collapsed line (`wkS.fd`) */
   short: 'The ads & revenue data monetization teams run on.',
-  body: "Ads performance and revenue data at TB/day scale for one of the world’s largest entertainment platforms - the numbers monetization teams run on. Brand-safety data feeds dynamic ads that grow ad revenue - with monitoring that keeps the reporting stack healthy.",
+  body:
+    'Ads performance and revenue data at ~50 TB a day, turned into self-serve analytics the monetization teams run on: which ads earned what, where, and when. Brand-safety data feeds dynamic ads, and monitoring keeps the reporting stack healthy.',
   metrics: [
-    { value: '~50 TB/day', label: 'ads & revenue data' },
-    { value: 'PB scale', label: 'lakehouse storage' },
-    { value: 'Brand safety', label: 'data for dynamic ads' },
+    { value: '~50 TB/day', label: 'ads & revenue data in production' },
+    { value: 'Self-serve', label: 'revenue & ads analytics for monetization teams' },
+    { value: 'Brand safety', label: 'data feeding dynamic ads' },
   ],
   /** v4 `fandomStack`: first chip is the AWS logo renamed "EMR" */
   stack: [{ ...I.aws, name: 'EMR' }, I.spark, I.iceberg, I.dbt, I.snowflake, I.airflow] as Tool[],

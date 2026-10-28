@@ -22,7 +22,7 @@ All copy and data live in `src/data/*.ts` - change text there, not in components
 
 Photos: `src/assets/photos/`. Replace a file with a higher-resolution one of the same name and aspect ratio; Astro regenerates AVIF/WebP at build.
 
-Copy tests compare the page with the design (`tests/fixtures/design-*.json`). After an intentional copy change, update the fixture or the test will fail.
+Copy is owned by sales, not by the design file. The design (`Adam Zuzo Profile v4`) is still the reference for *layout*, but the wording in `src/data/*.ts` is free to change for conversion reasons. The strict copy test and its design fixtures were retired for that reason; the remaining specs assert structure and behaviour.
 
 ## Run locally
 
@@ -34,7 +34,7 @@ npx serve dist -l 4321 & ./node_modules/.bin/playwright test   # full suite (nee
 npm run lhci         # Lighthouse mobile against dist/
 ```
 
-Other scripts: `npm run fetch-assets` (re-download external logos into `src/assets/logos/`), `npm run snapshot-design` (regenerate design fixtures; needs the design folder and internet), `node scripts/og.mjs` (OG image), `node scripts/compare.mjs` (design vs site screenshots).
+Other scripts: `npm run fetch-assets` (re-download external logos into `src/assets/logos/`), `node scripts/og.mjs` (OG image), `node scripts/compare.mjs` (design vs site screenshots).
 
 ## Deploy
 

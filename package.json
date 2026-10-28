@@ -11,7 +11,6 @@
     "build": "astro check && astro build",
     "preview": "astro preview --port 4321",
     "fetch-assets": "node scripts/fetch-assets.mjs",
-    "snapshot-design": "playwright test -c playwright.snapshot.config.ts",
     "test": "playwright test",
     "lhci": "lhci autorun"
   },

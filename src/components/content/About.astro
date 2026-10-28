@@ -27,7 +27,7 @@ import { about } from '../../data/about';
         <div class="row">
           <div data-reveal="" data-delay="150" class="card stats">
             {about.stats.map((s) => (
-              <span class="stat"><span class="big">{s.value}<span class="unit">{s.unit}</span></span><span class="cap">{s.label}</span></span>
+              <span class="stat" data-test="stat"><span class="big">{s.value}<span class="unit">{s.unit}</span></span><span class="cap">{s.label}</span></span>
             ))}
           </div>
           <div data-reveal="" data-delay="200" class="card certs">

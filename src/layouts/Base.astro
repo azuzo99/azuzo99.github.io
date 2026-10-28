@@ -17,14 +17,21 @@ import mono500 from '@fontsource/geist-mono/files/geist-mono-latin-500-normal.wo
 // Preload every used latin face: a late swap reflows text above deep-linked sections (CLS).
 const fonts = [sans400, sans500, sans600, mono400, mono500];
 
+import { analytics } from '../data/site';
+import { offers } from '../data/offers';
+import { talk } from '../data/community';
+
 interface Props {
   title?: string;
   description?: string;
 }
 
 const {
-  title = 'Adam Zuzo | Data & AI Engineer',
-  description = 'Hi, I’m Adam - a monetization data engineer. I turn ads and revenue data into platforms that help companies grow monetization, and build AI apps on top - without a scary cloud bill.',
+  // Buyers search for a service, not for a job title: "data consultant Poland",
+  // "freelance data engineer", "AWS cost optimization consultant", "AWS Claude training".
+  title = 'Adam Zuzo - Data & AI Consultant, Poznan | Apps, Consulting, Training',
+  description =
+    'Freelance data and AI engineer in Poland. I build apps and automations for small businesses, consult on data platforms and AWS cost for data teams, and train engineers on AWS and Claude. Book a free 45-minute intro.',
 } = Astro.props;
 
 const site = Astro.site?.href ?? 'https://azuzo99.github.io/';
@@ -44,6 +51,63 @@ const person = {
     'https://www.instagram.com/zuzo_adam/',
     'https://github.com/azuzo99',
   ],
+};
+
+// The page declares a *service* as well as a person: a Person entity alone reads as a
+// candidate profile to both search engines and answer engines.
+const service = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Adam Zuzo - Data & AI Consulting',
+  url: site,
+  provider: { '@type': 'Person', name: 'Adam Zuzo', url: site },
+  areaServed: ['PL', 'EU'],
+  knowsAbout: [
+    'Data engineering',
+    'AWS',
+    'Snowflake',
+    'dbt',
+    'Apache Iceberg',
+    'Apache Airflow',
+    'Cloud cost optimization',
+    'AI agents',
+    'Model Context Protocol',
+    'Retrieval-augmented generation',
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Ways to work with me',
+    itemListElement: [
+      'AI apps and automations for small businesses',
+      'Data platform and cloud cost consulting',
+      'AWS and Claude training and mentoring',
+    ].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
+  },
+};
+
+// The three questions are rendered verbatim as question-and-answer pairs inside the offer
+// cards, so the markup mirrors visible text. Do not add entries that are not rendered as Q&A.
+const faq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: offers.map((o) => ({
+    '@type': 'Question',
+    name: o.objection.q,
+    acceptedAnswer: { '@type': 'Answer', text: o.objection.a },
+  })),
+};
+
+// uploadDate and duration read from the real video (yt-dlp: 20260708, 3068 s); `name` is the
+// actual YouTube title, which is Polish - the English line stays in `description`.
+const video = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: '[#659] DataOps i koszty: operacyjne wyzwania danych - Adam Zuzo',
+  description: talk.body,
+  thumbnailUrl: new URL(talk.thumb.src, site).href,
+  embedUrl: 'https://www.youtube-nocookie.com/embed/SE4vJdIIbGM',
+  uploadDate: '2026-07-08',
+  duration: 'PT51M8S',
 };
 ---
 <!doctype html>
@@ -72,6 +136,12 @@ const person = {
     <meta name="twitter:image" content={ogImage} />
 
     <script type="application/ld+json" set:html={JSON.stringify(person)} />
+    <script type="application/ld+json" set:html={JSON.stringify(service)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faq)} />
+    <script type="application/ld+json" set:html={JSON.stringify(video)} />
+    {analytics.umamiWebsiteId && (
+      <script defer src="https://cloud.umami.is/script.js" data-website-id={analytics.umamiWebsiteId}></script>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>

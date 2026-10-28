@@ -12,7 +12,14 @@ import { contactSection, contacts, email, footer } from '../../data/contact';
           <h2 id="contact-h" style="margin: 0; font-weight: 500; font-size: clamp(56px,8vw,120px); line-height: .9; letter-spacing: -.055em;">{contactSection.heading}</h2>
           <p data-only="notphone" class="body" style="font-size: 18px; line-height: 1.55; max-width: 44ch;">{contactSection.body}</p>
           <p data-only="phone" class="body" style="font-size: 17px; line-height: 1.5;">{contactSection.bodyShort}</p>
-          <a class="cta" href={contactSection.cta.href} target="_blank" rel="noreferrer">{contactSection.cta.label}</a>
+          <a class="cta" href={contactSection.cta.href} target="_blank" rel="noreferrer" data-umami-event="cta-book-contact">{contactSection.cta.label}</a>
+          {contactSection.secondary.href && (
+            <p class="second">
+              <span class="second-l">{contactSection.secondary.label}</span>
+              <a class="second-a" href={contactSection.secondary.href} target="_blank" rel="noreferrer" data-umami-event="form-open">{contactSection.secondary.text}</a>
+              <span class="second-n">{contactSection.secondary.note}</span>
+            </p>
+          )}
         </div>
         <div class="cl">
           <div class="cl-links">
@@ -43,6 +50,12 @@ import { contactSection, contacts, email, footer } from '../../data/contact';
   #contact .body { margin: 0; color: #CFC8BC; }
   #contact .cta { align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; background: #FBF6EE; color: #111111; padding: 17px 28px; border-radius: 999px; font-weight: 500; font-size: 16px; }
   #contact .cta:hover { background: #E9E1D3; color: #111111; }
+  /* Deliberately quiet: the call is the primary path, this one only catches the people who
+     will never book one cold. */
+  #contact .second { margin: -8px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 14px; color: #CFC8BC; }
+  #contact .second-a { color: #FBF6EE; border-bottom: 1px solid #3A3A3A; }
+  #contact .second-a:hover { color: #FBF6EE; border-bottom-color: #FBF6EE; }
+  #contact .second-n { font-size: 13px; color: #77716A; }
   #contact .cl { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
   #contact .cl-links { display: flex; flex-direction: column; gap: 8px; }
   #contact .ck { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px; border-radius: 14px; background: #1C1C1C; border: 1px solid #2A2A2A; color: #FBF6EE; }

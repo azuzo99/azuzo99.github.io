@@ -21,7 +21,7 @@ import { site, links, chapters, navItems, social, ui } from '../../data/site';
         ))}
       </div>
       <button type="button" class="menu-btn hit" aria-label={ui.menuLabel} aria-expanded="false" aria-controls="menu" data-menu-btn data-closed={ui.menuIcon.closed} data-open={ui.menuIcon.open}>{ui.menuIcon.closed}</button>
-      <a href={links.calendly} target="_blank" rel="noreferrer" class="book hit"><span class="bdot"></span>{ui.bookCall}</a>
+      <a href={links.calendly} target="_blank" rel="noreferrer" class="book hit" data-umami-event="cta-book-header"><span class="bdot"></span>{ui.bookCall}</a>
     </div>
     <div class="bar" data-test="bar-fill"></div>
   </nav>

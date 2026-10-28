@@ -14,7 +14,7 @@ export const communitySection = {
   /** two <span>s inside one <p> (v4:L544) */
   leadLines: [
     "Bringing Poznan’s cloud & AI builders together.",
-    'Where I learn & teach - the same people skills I bring to your team.',
+    'Two communities, a conference and a recorded talk - the proof behind the training offer.',
   ],
 } as const;
 
@@ -102,5 +102,5 @@ export const talk = {
   /** text */
   eyebrow: 'TALK | SYSOPS/DEVOPS POLSKA #659 | 2026',
   title: 'DataOps and costs: operational data challenges',
-  body: 'Where money escapes in AWS data systems - and the architecture decisions that actually move the bill: S3 layout, file formats, Iceberg, and compute choices.',
+  body: 'Where money escapes in AWS data systems - and the architecture decisions that actually move the bill: S3 layout, file formats, Iceberg, and compute choices. It is 51 minutes of exactly what the consulting engagement looks like, for free.',
 } as const;

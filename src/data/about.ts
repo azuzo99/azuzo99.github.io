@@ -5,7 +5,7 @@ import aboutPhoto from '../assets/photos/about-photo.webp';
 
 export const about = {
   num: '(02)',
-  heading: 'About me.',
+  heading: 'Why trust me.',
   /** image-slot `about-photo` (v4:L261, grayscale); v4 has no alt - added for a11y */
   photo: aboutPhoto,
   photoAlt: 'Adam Zuzo',
@@ -16,19 +16,19 @@ export const about = {
   /** label is notPhone only (v4:L274) */
   inShortLabel: 'IN SHORT',
   inShort:
-    'I work on the ads and revenue data that tell a business where its money comes from - then make it faster, cheaper and AI-ready.',
+    'I work on the data that tells a business where its money comes from - then make it faster, cheaper and AI-ready. At Fandom that is ~50 TB a day. For a small business it is one app that replaces a spreadsheet. Same engineering, different size.',
 
   /** `value<span>unit</span>`; unit keeps its leading space (v4:L281, L285) */
   stats: [
     { value: '~50 TB', unit: ' /day', label: 'of data processed' },
-    { value: 'PB', unit: ' scale', label: 'of lakehouse data stored' },
+    { value: '18', unit: ' people', label: 'in the academy teams I led' },
   ],
 
   certsLabel: 'CERTIFICATIONS',
   certAws: {
-    title: 'AWS Certified Architect',
+    title: 'AWS Certified Solutions Architect',
     /** notPhone only (v4:L293) */
-    detail: 'with Data Analytics - Specialty',
+    detail: '+ Data Analytics - Specialty',
     icon: img.aws,
     alt: 'AWS',
   },
@@ -37,8 +37,8 @@ export const about = {
     icon: img.claudeMuted,
     alt: 'Claude',
     /** `certBadge` (v4:L1120): notPhone vs phone */
-    badge: 'IN PROGRESS | 2026',
-    badgeShort: 'IN PROGRESS',
+    badge: 'EXPECTED 2026',
+    badgeShort: 'EXPECTED',
   },
 
   speaker: {
@@ -60,7 +60,7 @@ export const about = {
     linkShort: '→',
     /** `<span>2</span>tech communities led` (v4:L319) */
     count: '2',
-    title: 'tech communities led',
+    title: 'tech communities co-led',
     /** notPhone only (v4:L320) */
     detail: 'Claude Community Poznan | AWS Poznan & Poland Community',
   },

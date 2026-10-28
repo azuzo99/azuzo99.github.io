@@ -3,19 +3,32 @@ import { I, type Tool } from './icons';
 import headshot from '../assets/photos/hero-headshot.webp';
 
 export const hero = {
-  status: 'Open to new projects', // v4:L88
   /** h1, one <br> between the lines (v4:L90) */
-  titleLines: ['Data & AI', 'Engineer'],
+  titleLines: ['Data & AI that', 'pays for itself.'],
   /** notPhone only (v4:L92) */
   specializedIn: 'Specialized in',
   /** first pill is the filled one (v4:L93-97) */
-  pills: ['Monetization', 'Ads data', 'Revenue analytics', 'Cloud costs', 'AI'],
-  /** v4:L109, L146 (also the meta description) */
+  pills: ['AI apps', 'Automations', 'Ads & revenue data', 'Cloud costs', 'Training'],
+  /** v4:L109, L146 */
   intro:
-    "Hi, I’m Adam - a monetization data engineer. I turn ads and revenue data into platforms that help companies grow monetization, and build AI apps on top - without a scary cloud bill.",
+    'I build the data and AI systems revenue runs on - ~50 TB a day in production. Apps and automations for small businesses, consulting for data teams, AWS and Claude training. Same engineering, scoped to fit.',
   /** image-slot `hero-headshot` (v4:L102, L122); v4 has no alt - added for a11y */
   photo: headshot,
   photoAlt: 'Adam Zuzo',
+
+  /**
+   * Segment router under the hero CTA (>= 600). Three buyers, three entry points, so a
+   * visitor who is not an enterprise data team still sees themselves in the first screen.
+   * All three land on #services; the offer tablist takes it from there.
+   */
+  segments: {
+    label: 'Which one are you?',
+    items: [
+      { text: 'I run a small business', href: '#services', event: 'segment-smallbiz' },
+      { text: 'I need a consultant', href: '#services', event: 'segment-consulting' },
+      { text: 'I want training or mentoring', href: '#services', event: 'segment-training' },
+    ],
+  },
 } as const;
 
 export interface TechGroup {

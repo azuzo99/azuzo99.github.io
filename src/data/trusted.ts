@@ -3,9 +3,11 @@ import type { ImageMetadata } from 'astro';
 import { img } from './icons';
 
 export const trustedSection = {
-  label: 'WORKED WITH & TRUSTED BY',
+  // These are employers, consultancy placements and communities - not clients who endorsed
+  // me. "Trusted by" would be an endorsement claim none of them has made.
+  label: 'WHERE MY WORK HAS RUN',
   /** section aria-label (design §6.5; not in v4) */
-  ariaLabel: 'Worked with and trusted by',
+  ariaLabel: 'Organizations where my work has run',
 } as const;
 
 /**

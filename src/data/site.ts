@@ -8,12 +8,22 @@ export const site = {
   /** nav logo tile (v4:L57) */
   initials: 'AZ',
   /** nav subtitle default; phone shows `NN | Chapter` instead once past the intro (v4:L973) */
-  role: 'Data & AI Engineer',
+  role: 'Data & AI Consultant',
   email: 'zuzoadam@gmail.com',
 } as const;
 
 export const links = {
-  calendly: 'https://calendly.com/adam-zuzo',
+  /**
+   * The event itself, not the profile page. Only one event type is active, so the profile
+   * page resolves to the same booking - but it costs the visitor an extra click.
+   */
+  calendly: 'https://calendly.com/adam-zuzo/konsultacja-it-it-consultation-pl-en',
+  /**
+   * Qualifying intake form (Google Form -> Google Sheet), the low-friction path for
+   * visitors who will not book a cold 45-min call. Empty string = not published yet;
+   * every surface that links to it is conditional on this being non-empty.
+   */
+  intakeForm: '',
   linkedin: 'https://www.linkedin.com/in/adam-zuzo/',
   instagram: 'https://www.instagram.com/zuzo_adam/',
   github: 'https://github.com/azuzo99',
@@ -64,15 +74,20 @@ export const social: SocialLink[] = [
   { label: 'GitHub', href: links.github, icon: img.github },
 ];
 
+/**
+ * Umami Cloud website id. Cookieless, ~2 KB, works on GitHub Pages, no consent banner
+ * needed in the EU. Empty string = analytics off; Base.astro renders nothing.
+ */
+export const analytics = { umamiWebsiteId: '' } as const;
+
 /** Shared UI strings. */
 export const ui = {
   railLabel: 'Page progress', // aside aria-label (v4:L39)
   menuLabel: 'Sections', // menu button aria-label (v4:L67)
   menuIcon: { closed: '≡', open: '×' }, // v4:L974
-  bookCall: 'Book a call', // nav CTA (v4:L68)
+  bookCall: 'Free intro', // nav CTA (v4:L68) - must stay short: the header pill has no room at 390px
   bookIntro: 'Book a free 45-min intro', // hero CTAs, followed by <span>↗</span> (v4:L111, L130, L139)
   bookIntroArrow: '↗',
-  offerLink: 'What I offer ↓', // v4:L117, L144
   forLabel: 'FOR', // audience chip prefix (offers, work)
   toggleIcon: { closed: '+', open: '−' }, // all phone/tablet toggles
 } as const;

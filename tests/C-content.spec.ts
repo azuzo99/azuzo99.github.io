@@ -42,8 +42,9 @@ test.describe('@C about', () => {
   });
 
   test('stats are stacked in a column from 600px and side by side in a row on phone', async ({ page }) => {
-    const a = about(page).getByText('~50 TB').first();
-    const b = about(page).getByText('PB', { exact: false }).filter({ hasText: 'scale' }).first();
+    const stats = about(page).locator('[data-test=stat]');
+    const a = stats.nth(0);
+    const b = stats.nth(1);
     await a.scrollIntoViewIfNeeded();
     await expect(a).toBeVisible();
     await expect(b).toBeVisible();
@@ -61,10 +62,10 @@ test.describe('@C about', () => {
   test('certification cards: AWS detail and Claude badge variant per band', async ({ page }) => {
     const sec = about(page);
     await expect(sec.getByText(aboutData.certsLabel)).toBeVisible();
-    await expect(sec.getByText('AWS Certified Architect')).toBeVisible();
+    await expect(sec.getByText(aboutData.certAwsTitle)).toBeVisible();
     await expect(sec.getByText('Claude Certified Architect')).toBeVisible();
-    const detail = sec.getByText('with Data Analytics - Specialty');
-    const badge = sec.getByText(/^IN PROGRESS/).locator('visible=true');
+    const detail = sec.getByText(aboutData.certAwsDetail);
+    const badge = sec.getByText(new RegExp(`^${aboutData.badgeShort}`)).locator('visible=true');
     await expect(badge).toHaveCount(1);
     if (isPhone(page)) {
       await expect(detail).toBeHidden();
@@ -78,8 +79,8 @@ test.describe('@C about', () => {
   test('both dark cards link to #community', async ({ page }) => {
     const cards = about(page).locator('a[href="#community"]');
     await expect(cards).toHaveCount(2);
-    await expect(cards.nth(0)).toContainText('Active speaker');
-    await expect(cards.nth(1)).toContainText('tech communities led');
+    await expect(cards.nth(0)).toContainText(aboutData.speakerTitle);
+    await expect(cards.nth(1)).toContainText(aboutData.communitiesTitle);
   });
 });
 

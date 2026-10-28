@@ -7,7 +7,7 @@ import { I, type Tool } from './icons';
 export const stackSection = {
   num: '(05)',
   heading: 'Main tech stack.',
-  exploringLabel: 'Currently exploring',
+  exploringLabel: 'Currently building with',
   /** group header `${count} tools` */
   toolsSuffix: ' tools',
   whereLabel: 'WHERE I USED IT',

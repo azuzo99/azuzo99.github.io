@@ -17,7 +17,7 @@ import { offers, offersSection as S } from '../../data/offers';
         <div class="tabs-wrap">
           <div role="tablist" aria-label={S.tablistLabel} class="tablist">
             {offers.map((o, i) => (
-              <button role="tab" type="button" id={`offer-tab-${i}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`offer-panel-${i}`} tabindex={i === 0 ? 0 : -1} data-test="offer-tab" data-i={i}>
+              <button role="tab" type="button" id={`offer-tab-${i}`} aria-selected={i === 0 ? 'true' : 'false'} aria-controls={`offer-panel-${i}`} tabindex={i === 0 ? 0 : -1} data-test="offer-tab" data-i={i} data-umami-event={`offer-tab-${o.num}`}>
                 <span class="tab-title"><span class="mono tab-num">{o.num}</span>{o.tabTitle}</span>
                 <span class="tab-who">{o.cWho}</span>
                 <span class="bar" data-test="offer-bar"></span>
@@ -47,12 +47,27 @@ import { offers, offersSection as S } from '../../data/offers';
                   </div>
                 ))}
               </div>
+              <p class="ends"><span class="mono ends-label">{S.endsLabel}</span>{o.how.ends}</p>
+              <details class="more" data-test="offer-how">
+                <summary>{S.howSummary}</summary>
+                <div class="more-body">
+                  <span class="mono how-label">{o.how.label}</span>
+                  <ol class="steps">
+                    {o.how.steps.map((st) => <li>{st}</li>)}
+                  </ol>
+                  <div class="obj">
+                    <span class="mono obj-label">{S.objectionLabel}</span>
+                    <p class="obj-q">“{o.objection.q}”</p>
+                    <p class="obj-a">{o.objection.a}</p>
+                  </div>
+                </div>
+              </details>
               <p class="proof"><span class="mono">{S.proofLabel}</span>{o.proof}</p>
               <div class="reach">
                 <span class="reach-label">{S.reachLabel}</span>
                 <div class="chans">
                   {o.channels.map((c) => (
-                    <a class:list={['ch', { primary: c.primary }]} href={c.href} target="_blank" rel="noreferrer"><span class="chi"><Image src={c.icon} alt="" width={14} height={14} loading="lazy" /></span>{c.label}</a>
+                    <a class:list={['ch', { primary: c.primary }]} href={c.href} target="_blank" rel="noreferrer" data-umami-event={c.primary ? `cta-book-offer-${o.num}` : `offer-${o.num}-${c.label.toLowerCase()}`}><span class="chi"><Image src={c.icon} alt="" width={14} height={14} loading="lazy" /></span>{c.label}</a>
                   ))}
                 </div>
               </div>
@@ -67,6 +82,7 @@ import { offers, offersSection as S } from '../../data/offers';
                 <span class="mono num">{o.num}</span>
                 <span class="toggle-text">
                   <span class="ctitle">{o.cTitle}</span>
+                  <span class="oneline">{o.oneLine}</span>
                   <span class="cwho">{o.cWho}</span>
                 </span>
                 <span class="tg" aria-hidden="true">+</span>
@@ -81,10 +97,25 @@ import { offers, offersSection as S } from '../../data/offers';
                     </div>
                   ))}
                 </div>
+                <p class="ends"><span class="mono ends-label">{S.endsLabel}</span>{o.how.ends}</p>
+                  <details class="more" data-test="offer-how">
+                  <summary>{S.howSummary}</summary>
+                  <div class="more-body">
+                    <span class="mono how-label">{o.how.label}</span>
+                    <ol class="steps">
+                      {o.how.steps.map((st) => <li>{st}</li>)}
+                    </ol>
+                    <div class="obj">
+                      <span class="mono obj-label">{S.objectionLabel}</span>
+                      <p class="obj-q">“{o.objection.q}”</p>
+                      <p class="obj-a">{o.objection.a}</p>
+                    </div>
+                  </div>
+                </details>
                 <div class="reach">
                   <div class="chans">
                     {o.channels.map((c) => (
-                      <a class:list={['ch', { primary: c.primary }]} href={c.href} target="_blank" rel="noreferrer"><span class="chi"><Image src={c.icon} alt="" width={14} height={14} loading="lazy" /></span>{c.label}</a>
+                      <a class:list={['ch', { primary: c.primary }]} href={c.href} target="_blank" rel="noreferrer" data-umami-event={c.primary ? `cta-book-offer-${o.num}` : `offer-${o.num}-${c.label.toLowerCase()}`}><span class="chi"><Image src={c.icon} alt="" width={14} height={14} loading="lazy" /></span>{c.label}</a>
                     ))}
                   </div>
                 </div>
@@ -132,6 +163,8 @@ import { offers, offersSection as S } from '../../data/offers';
   .num { opacity: .7; flex: none; }
   .toggle-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
   .ctitle { font-size: 21px; font-weight: 500; letter-spacing: -.025em; line-height: 1.1; }
+  .oneline { font-size: 14px; line-height: 1.35; color: var(--muted-dark); }
+  .accordion[data-open='true'] .oneline { display: none; }
   .cwho { align-self: flex-start; font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--green); color: var(--ink); }
   .tg { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--bg); font-size: 22px; line-height: 1; }
   .accordion[data-open='true'] .tg { background: var(--bg); color: var(--ink); }
@@ -151,6 +184,22 @@ import { offers, offersSection as S } from '../../data/offers';
   .ico { position: relative; width: 32px; height: 32px; border-radius: 8px; background: var(--white); display: grid; place-items: center; flex: none; }
   .mono-fb { position: absolute; inset: 0; display: grid; place-items: center; font-size: 9px; color: var(--muted-2); }
   .ico img { position: relative; width: 18px; height: 18px; object-fit: contain; background: var(--white); }
+  .ends { margin: 0; padding-top: 12px; border-top: 1px solid var(--d-2e); font-size: 15px; line-height: 1.4; font-weight: 600; }
+  .ends-label { margin-right: 8px; letter-spacing: .06em; color: var(--muted-3); font-weight: 400; }
+  .more { border: 0; }
+  .more > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 0 14px; border: 1px solid var(--d-3a); border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 500; color: inherit; }
+  .more > summary::-webkit-details-marker { display: none; }
+  .more > summary::after { content: '+'; font-size: 20px; line-height: 1; opacity: .7; }
+  .more[open] > summary::after { content: '−'; }
+  .more-body { display: flex; flex-direction: column; gap: 10px; padding: 14px 2px 4px; }
+  .how-label, .obj-label { letter-spacing: .06em; color: var(--muted-3); }
+  .steps { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 7px; font-size: 14px; line-height: 1.45; color: var(--muted-dark); }
+  .obj { display: flex; flex-direction: column; gap: 5px; padding-top: 10px; border-top: 1px solid var(--d-2e); }
+  .obj-q { margin: 0; font-size: 14px; font-weight: 600; }
+  .obj-a { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted-dark); }
+  /* The accordion card inverts to the light background when closed; keep the text readable. */
+  .accordion .more-body .steps, .accordion .more-body .obj-a { color: var(--muted-dark); }
+
   .proof { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted-dark); }
   .proof .mono { margin-right: 8px; color: var(--bg); }
   .reach { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--d-2e); display: flex; flex-direction: column; gap: 10px; }
@@ -164,12 +213,20 @@ import { offers, offersSection as S } from '../../data/offers';
   .chi img { width: 14px; height: 14px; object-fit: contain; }
 
   @media (min-width: 900px) and (min-height: 720px) {
+    /* The card must end above the fold: its channel buttons are the offer's CTA, and the
+       sticky section means a buyer cannot scroll them into view. */
+    .slider { padding: clamp(20px, 2.4vw, 30px); gap: 10px; }
+    .slider .point { padding: 9px 0; }
+    .slider .reach { padding-top: 12px; }
     #services { height: 240vh; }
     .sec { position: sticky; top: 84px; }
     .tap-hint, .acc { display: none; }
     .tabs-wrap { display: flex; }
     .panel { background: var(--ink); overflow: hidden; }
     .track { display: flex; flex-direction: row; height: 100%; gap: 0; }
+    /* `how` is a disclosure, so an open card can outgrow the sticky panel. Scroll the card,
+       never the page, or the sticky section fights the scroll. */
+    .slider { overflow-y: auto; }
   }
 
   @media (prefers-reduced-motion: reduce) {

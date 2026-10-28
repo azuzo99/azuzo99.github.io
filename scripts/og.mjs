@@ -19,12 +19,12 @@ body { margin: 0; width: 1200px; height: 630px; background: #FBF6EE; color: #111
 .tile { width: 56px; height: 56px; border-radius: 16px; background: #111111; color: #FBF6EE; display: grid; place-items: center; font-size: 20px; }
 .pill { display: flex; align-items: center; gap: 10px; border: 1px solid #E4DACA; border-radius: 999px; padding: 10px 20px; font-size: 22px; font-weight: 500; }
 .dot { width: 12px; height: 12px; border-radius: 50%; background: #2F7A55; }
-h1 { margin: 0; font-size: 150px; line-height: .9; letter-spacing: -.055em; font-weight: 500; }
+h1 { margin: 0; font-size: 104px; line-height: .9; letter-spacing: -.055em; font-weight: 500; }
 .foot { display: flex; justify-content: space-between; font-family: M, monospace; font-size: 22px; color: #5C5850; letter-spacing: .06em; }
 .foot b { font-weight: 500; color: #111111; background: #7FC7A0; padding: 4px 12px; border-radius: 999px; }
 </style></head><body><div class="wrap">
-<div class="top"><div class="logo"><span class="tile">AZ</span>Adam Zuzo</div><div class="pill"><span class="dot"></span>Open to new projects</div></div>
-<h1>Data &amp; AI<br>Engineer</h1>
+<div class="top"><div class="logo"><span class="tile">AZ</span>Adam Zuzo</div><div class="pill"><span class="dot"></span>Apps · Consulting · Training</div></div>
+<h1>Data &amp; AI that<br>pays for itself.</h1>
 <div class="foot"><span>APPS | CONSULTING | TRAINING</span><b>azuzo99.github.io</b></div>
 </div></body></html>`;
 

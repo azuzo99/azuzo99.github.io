@@ -35,11 +35,13 @@ test('no request leaves localhost on load @scaffold', async ({ page }) => {
 
 test('head: SEO essentials @scaffold', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Adam Zuzo | Data & AI Engineer');
+  await expect(page).toHaveTitle('Adam Zuzo - Data & AI Consultant, Poznan | Apps, Consulting, Training');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', 'https://azuzo99.github.io/');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://azuzo99.github.io/og.png');
-  const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent()) ?? '{}');
-  expect(ld['@type']).toBe('Person');
+  const lds = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const types = lds.map((t) => JSON.parse(t)['@type']);
+  expect(types).toContain('Person');
+  expect(types).toContain('ProfessionalService');
 });
 
 test('axe: no serious/critical violations (color-contrast reported only) @scaffold @a11y', async ({ page }, info) => {
