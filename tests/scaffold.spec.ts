@@ -21,11 +21,16 @@ test('sections follow the markup contract @scaffold', async ({ page }) => {
   expect(ids.length, 'duplicate ids').toBe(new Set(ids).size);
 });
 
-test('no request leaves localhost on load @scaffold', async ({ page }) => {
+// Analytics is the one deliberate third party. Everything else - fonts, icons, images -
+// is self-hosted, which is what keeps the page cookieless and consent-banner-free.
+const ALLOWED_HOSTS = ['cloud.umami.is'];
+
+test('no unexpected request leaves localhost on load @scaffold', async ({ page }) => {
   const external: string[] = [];
   page.on('request', (req) => {
     const u = new URL(req.url());
-    if (!['localhost', '127.0.0.1'].includes(u.hostname) && u.protocol.startsWith('http')) external.push(req.url());
+    if (['localhost', '127.0.0.1', ...ALLOWED_HOSTS].includes(u.hostname)) return;
+    if (u.protocol.startsWith('http')) external.push(req.url());
   });
   await page.goto('/', { waitUntil: 'networkidle' });
   await page.mouse.wheel(0, 20000);

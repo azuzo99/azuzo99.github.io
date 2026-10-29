@@ -75,6 +75,9 @@ import { contactSection, contacts, email, footer } from '../../data/contact';
   #contact .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding-top: 22px; border-top: 1px solid #2A2A2A; font-size: 13px; color: #77716A; }
   @media (max-width: 599px) {
     #contact [data-only=notphone] { display: none; }
+    /* Stack so the link gets its own 44px row - it is a real tap target on a phone. */
+    #contact .second { flex-direction: column; gap: 0; }
+    #contact .second-a { align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; }
     #contact .cl { flex: 1 1 100%; }
     #contact .cl-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
     #contact .ck { flex-direction: column; justify-content: flex-start; gap: 8px; padding: 14px 6px; font-size: 13px; font-weight: 500; }

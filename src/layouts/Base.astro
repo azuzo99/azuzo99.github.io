@@ -30,8 +30,10 @@ const {
   // Buyers search for a service, not for a job title: "data consultant Poland",
   // "freelance data engineer", "AWS cost optimization consultant", "AWS Claude training".
   title = 'Adam Zuzo - Data & AI Consultant, Poznan | Apps, Consulting, Training',
+  // Under 155 chars so Google shows it whole, and "consultant" not "engineer" - every other
+  // surface sells a service now, and this line is the one a buyer reads before clicking.
   description =
-    'Freelance data and AI engineer in Poland. I build apps and automations for small businesses, consult on data platforms and AWS cost for data teams, and train engineers on AWS and Claude. Book a free 45-minute intro.',
+    'Freelance data & AI consultant in Poland. Apps and automations for small businesses, data platform and AWS cost consulting, training on AWS and Claude.',
 } = Astro.props;
 
 const site = Astro.site?.href ?? 'https://azuzo99.github.io/';
@@ -117,6 +119,7 @@ const video = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Adam Zuzo" />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#FBF6EE" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

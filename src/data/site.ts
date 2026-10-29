@@ -23,7 +23,7 @@ export const links = {
    * visitors who will not book a cold 45-min call. Empty string = not published yet;
    * every surface that links to it is conditional on this being non-empty.
    */
-  intakeForm: '',
+  intakeForm: 'https://docs.google.com/forms/d/e/1FAIpQLSeo9XRulx2B4yMfKUa3Ir7s9eam40xsw4oyZjssAkKJP_WlTg/viewform',
   linkedin: 'https://www.linkedin.com/in/adam-zuzo/',
   instagram: 'https://www.instagram.com/zuzo_adam/',
   github: 'https://github.com/azuzo99',
@@ -78,7 +78,7 @@ export const social: SocialLink[] = [
  * Umami Cloud website id. Cookieless, ~2 KB, works on GitHub Pages, no consent banner
  * needed in the EU. Empty string = analytics off; Base.astro renders nothing.
  */
-export const analytics = { umamiWebsiteId: '' } as const;
+export const analytics = { umamiWebsiteId: '4f4b9281-5565-4ba1-b4f9-a983fd68701a' } as const;
 
 /** Shared UI strings. */
 export const ui = {
