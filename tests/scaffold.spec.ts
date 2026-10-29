@@ -40,7 +40,7 @@ test('no unexpected request leaves localhost on load @scaffold', async ({ page }
 
 test('head: SEO essentials @scaffold', async ({ page }) => {
   await page.goto('/');
-  await expect(page).toHaveTitle('Adam Zuzo - Data & AI Consultant, Poznan | Apps, Consulting, Training');
+  await expect(page).toHaveTitle('Adam Zuzo - Data & AI Consultant | Poznan, Warsaw, remote');
   await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', 'https://azuzo99.github.io/');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://azuzo99.github.io/og.png');
   const lds = await page.locator('script[type="application/ld+json"]').allTextContents();

@@ -29,7 +29,7 @@ interface Props {
 const {
   // Buyers search for a service, not for a job title: "data consultant Poland",
   // "freelance data engineer", "AWS cost optimization consultant", "AWS Claude training".
-  title = 'Adam Zuzo - Data & AI Consultant, Poznan | Apps, Consulting, Training',
+  title = 'Adam Zuzo - Data & AI Consultant | Poznan, Warsaw, remote',
   // Under 155 chars so Google shows it whole, and "consultant" not "engineer" - every other
   // surface sells a service now, and this line is the one a buyer reads before clicking.
   description =
@@ -44,10 +44,14 @@ const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Adam Zuzo',
-  jobTitle: 'Data & AI Engineer',
+  jobTitle: 'Data & AI Consultant',
   url: site,
   email: 'mailto:zuzoadam@gmail.com',
   address: { '@type': 'PostalAddress', addressLocality: 'Poznan', addressCountry: 'PL' },
+  homeLocation: [
+    { '@type': 'City', name: 'Poznan' },
+    { '@type': 'City', name: 'Warsaw' },
+  ],
   sameAs: [
     'https://www.linkedin.com/in/adam-zuzo/',
     'https://www.instagram.com/zuzo_adam/',
@@ -63,7 +67,13 @@ const service = {
   name: 'Adam Zuzo - Data & AI Consulting',
   url: site,
   provider: { '@type': 'Person', name: 'Adam Zuzo', url: site },
-  areaServed: ['PL', 'EU'],
+  // Both cities named explicitly: answer engines match a city, not a country code.
+  areaServed: [
+    { '@type': 'City', name: 'Poznan' },
+    { '@type': 'City', name: 'Warsaw' },
+    { '@type': 'Country', name: 'Poland' },
+    'EU',
+  ],
   knowsAbout: [
     'Data engineering',
     'AWS',
